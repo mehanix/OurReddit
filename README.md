@@ -12,5 +12,3 @@
 - [] Mesaje de informare
 - [] Validari
 - [] Helpere pt View
-
-:)
