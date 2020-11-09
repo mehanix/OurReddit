@@ -9,7 +9,7 @@ namespace OurReddit.Controllers
 {
     public class UserController : Controller
     {
-        private UserDBContext db = new UserDBContext();
+        private Models.AppContext db = new Models.AppContext();
 
         [HttpGet]
         public String Index()
