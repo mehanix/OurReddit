@@ -14,7 +14,11 @@ namespace OurReddit.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public string CreationDate { get; set; }
-
+        public int CategoryId { get; set; }
+        
+        //un subiect apartine unei categorii 
+        public virtual Category Category { get; set; }
+        //o categorie are mai multe mesaje
         public virtual ICollection<Message> Messages { get; set; } //un subiect are mai multe mesaje
     }
 }

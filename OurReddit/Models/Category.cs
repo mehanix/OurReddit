@@ -14,8 +14,12 @@ namespace OurReddit.Models
         [Required]
         public string Name { get; set; }
         //public DateTime CreationDate { get; set; } nu mi merge datetime pls help
-        //public virtual User user;// cine l-a creat
-       public virtual ICollection<Subject> Subjects { get; set; } // o categorie are mai multe subiecte
+        
+        // o categorie are un creator
+        //public virtual User user { get; set; }
+
+        // o categorie are mai multe subiecte
+        public virtual ICollection<Subject> Subjects { get; set; } 
     }
 
 

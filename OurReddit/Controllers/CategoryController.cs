@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Razor.Generator;
 
 namespace OurReddit.Controllers
 {
@@ -26,6 +27,8 @@ namespace OurReddit.Controllers
         {
             Category category = db.Categories.Find(id);
             ViewBag.Category = category;
+            var subiecte = from subiect in category.Subjects select subiect;
+            ViewBag.Subjects = subiecte;
             return View();
         }
 
@@ -57,6 +60,27 @@ namespace OurReddit.Controllers
             return View();
         }
 
+        public ActionResult AddSubject(int id)
+        {
+            ViewBag.CategoryId = id;
+            return View();
+        }
+        //Add Subiect to categorie
+        [HttpPost]
+        public ActionResult AddSubject(Subject subject)
+        {
+            try {
+                db.Subjects.Add(subject);
+                db.SaveChanges();
+                return Redirect("/Category/Show/" + subject.CategoryId);
+                return View();
+            } catch (Exception e)
+            {
+                ViewBag.CategoryId = subject.CategoryId;
+                return View();
+            }
+           
+        }
         //PUT: edit student
         [HttpPut]
         public ActionResult Edit(int id, Category requestCategory)

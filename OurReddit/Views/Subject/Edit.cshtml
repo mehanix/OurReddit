@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Edit";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+</head>
+<body>
+    <p>Form edit subiect - cu datele vechi ale subiectului</p>
+    <form method="post" action="/Subject/Edit/@ViewBag.subject.Id">
+        @Html.HttpMethodOverride(HttpVerbs.Put)
+        <label>Titlu</label>
+        <br />
+        <input type="text" name="Title" value="@ViewBag.Subject.Title" />
+        <br />
+        <label>Descriere</label>
+        <br />
+        <input type="text" name="Description" />
+        <br/>
+        <button type="submit">Modifica subiect</button>
+    </form>
+</body>
+</html>

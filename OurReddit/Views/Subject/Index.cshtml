@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "Lista subiecte";
+}
+<h2>@ViewBag.Title</h2>
+
+@foreach (var subject in ViewBag.Subjects)
+{
+    <p>@subject.Title</p>
+
+    <a href="/Subject/Show/@subject.Id">Afiseaza subiect</a>
+    <a href="/Subject/Edit/@subject.Id">Editeaza subiect</a>
+    <br />
+    <hr />
+    <br />
+}
+
+<a href="/Subject/New">Adauga categorie</a>
