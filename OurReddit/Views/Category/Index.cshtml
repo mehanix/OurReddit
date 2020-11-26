@@ -1,18 +1,21 @@
 ﻿
-@{
-    ViewBag.Title = "Lista categorii";
-}
-<h2>@ViewBag.Title</h2>
+<h1>Categories</h1>
 
 @foreach (var category in ViewBag.Categories)
 {
-    <p>@category.Name</p>
+    <h3>@category.Name</h3>
 
-    <a href="/Category/Show/@category.Id">Afiseaza categorie</a>
-    <a href="/Category/Edit/@category.Id">Editeaza categorie</a>
+    <a href="/Category/Show/@category.Id">Show</a>
+    <a href="/Category/Edit/@category.Id">Edit</a>
+
+    <form method="post" action="/Category/Delete/@category.Id">
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+        <button type="submit">Delete</button>
+    </form>
+
     <br />
     <hr />
     <br />
 }
 
-<a href="/Category/New">Adauga categorie</a>
+<a href="/Category/New">Add new Category</a>

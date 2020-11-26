@@ -1,28 +1,18 @@
 ﻿
-@{
-    ViewBag.Title = "New";
-}
 
-<!DOCTYPE html>
-
-<html>
 <form method="post" action="/Subject/New">
-    <label>Nume subiect</label>
+    @Html.Hidden("CategoryId", (object)ViewBag.CategoryId)
     <br />
-    <input type="text" name="Title" />
-    <input type="text" name="Description" />
-
+    @Html.Hidden("DateCreated", DateTime.UtcNow)
     <br />
-    <!--<br />
-    <label>data TODO get date sau ceva</label>
+    @Html.Label("Title", "Subject Title")
     <br />
-    <input type="text" name="CreationDate" />
+    @Html.ValidationMessage("Title", new { @class = "text-danger " })
+    @Html.TextBox("Title", null, new { @class = "form-control" })
     <br />
+    @Html.ValidationMessage("Description", new { @class = "text-danger " })
+    @Html.Label("Description", "Subject Description")
     <br />
-    <label>User</label>
-    <br />
-    <input type="text" name="UserId" />
-    <br /> -->
-    <button type="submit">Adauga subiect</button>
+    @Html.TextBox("Description", null, new { @class = "form-control" })
+    <button type="submit">Add Subject</button>
 </form>
-</html>
