@@ -1,32 +1,29 @@
-﻿@{
-    ViewBag.Title = "Afisare categorie";
-}
-
+﻿
 <h1>@ViewBag.category.Name</h1>
 
 <br />
 
-@foreach (var subject in ViewBag.Subjects)
+@foreach (var subject in ViewBag.category.Subjects)
 {
-    <h3><a href="">@subject.Title</a></h3>
+    <h3><a href="/Subject/Show/@subject.Id">@subject.Title</a></h3>
     <p>@subject.Description</p>
+    <a href="/Subject/Edit/@subject.Id">Edit</a>
     <form method="post" action="/Subject/Delete/@subject.Id">
         @Html.HttpMethodOverride(HttpVerbs.Delete)
-        <button type="submit">Sterge</button>
+        <button type="submit">Delete</button>
     </form>
-
 }
 <br />
 <br />
-<a href="/Category/AddSubject/@ViewBag.category.Id">Adauga un nou subiect</a>
+<a href="/Subject/New/@ViewBag.category.Id">Add new Subject</a>
 
-<a href="/Category/Edit/@ViewBag.category.Id">Modifica categorie</a>
+<a href="/Category/Edit/@ViewBag.category.Id">Edit Category</a>
 <form method="post" action="/Category/Delete/@ViewBag.category.Id">
     @Html.HttpMethodOverride(HttpVerbs.Delete)
-    <button type="submit">Sterge Categoria</button>
+    <button type="submit">Delete Category</button>
 </form>
 <hr />
-<a href="/Category/Index">Inapoi la lista categoriilor</a>
+<a href="/Category/Index">Back to Categories</a>
 <br />
-<a href="/Category/New">Adauga alta categorie</a>
+<a href="/Category/New">Add new Category</a>
 <br />

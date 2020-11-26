@@ -7,8 +7,10 @@
 
 ![diag concept](https://i.imgur.com/PuFr4QX.png)\
 
-- [] Cerinte lab 4
-- [] CRUD pe 3 componente
+- [x] Cerinte lab 4
+- [] CRUD pe Category
+- [] CRUD pe Subject
+- [] CRUD pe Message
 - [] Mesaje de informare
 - [] Validari
-- [] Helpere pt View
+- [x] Helpere pt View

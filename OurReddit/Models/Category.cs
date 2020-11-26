@@ -11,9 +11,12 @@ namespace OurReddit.Models
     {
         [Key]
         public int Id{ get; set; }
-        [Required]
+        [MinLength(4, ErrorMessage = "Name too short")]
+        [MaxLength(27, ErrorMessage = "Name too long")]
+        [Required(ErrorMessage = "This field is mandatory")]
         public string Name { get; set; }
-        //public DateTime CreationDate { get; set; } nu mi merge datetime pls help
+        [Required]
+        public DateTime DateCreated { get; set; }
         
         // o categorie are un creator
         //public virtual User user { get; set; }
@@ -21,6 +24,4 @@ namespace OurReddit.Models
         // o categorie are mai multe subiecte
         public virtual ICollection<Subject> Subjects { get; set; } 
     }
-
-
 }

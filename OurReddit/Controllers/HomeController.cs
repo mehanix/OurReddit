@@ -10,6 +10,7 @@ namespace OurReddit.Controllers
     {
         public ActionResult Index()
         {
+            ViewBag.message = "hello world";
             return View();
         }
 

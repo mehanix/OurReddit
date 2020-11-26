@@ -1,4 +1,5 @@
-﻿using OurReddit.Models;
+﻿using OurReddit.ActionFilters;
+using OurReddit.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -11,31 +12,23 @@ namespace OurReddit.Controllers
     public class SubjectController : Controller
     {
         private Models.AppContext db = new Models.AppContext();
-        // GET: Subjects
-        public ActionResult Index()
-        {
-            var categories = from subject in db.Subjects
-                             orderby subject.Title
-                             select subject;
-            ViewBag.Subjects = categories;
-            return View();
-        }
-
-        // GET: Subject
+        
+        [HttpGet]
+        [AlertFilter]
         public ActionResult Show(int id)
         {
             Subject subject = db.Subjects.Find(id);
-            ViewBag.Subject = subject;
+            ViewBag.subject = subject;
             return View();
         }
 
-        // POST: vezi formul
-        public ActionResult New()
+        [HttpGet]
+        public ActionResult New(int id)
         {
-
+            ViewBag.CategoryId = id;
             return View();
         }
-        //POST: new subject
+
         [HttpPost]
         public ActionResult New(Subject subject)
         {
@@ -43,52 +36,60 @@ namespace OurReddit.Controllers
             {
                 db.Subjects.Add(subject);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["Alert"] = "Created new subject: " + subject.Title.ToString();
+                return Redirect("/Category/Show/" + subject.CategoryId);
             }
             catch (Exception e)
             {
-                return View();
+                TempData["Alert"] = "Failed to create subject with: " + e.Message;
+                return Redirect("/Category/Show/" + subject.CategoryId);
             }
         }
-        // sa primesti datele de editat, cred
+
+        [HttpGet]
+        [AlertFilter]
         public ActionResult Edit(int id)
         {
             Subject subject = db.Subjects.Find(id);
             ViewBag.Subject = subject;
-            return View();
+            return View(subject);
         }
 
-        //PUT: edit student
         [HttpPut]
         public ActionResult Edit(int id, Subject requestSubject)
         {
-            // try
+            try
             {
                 Subject subject = db.Subjects.Find(id);
                 if (TryUpdateModel(subject))
                 {
-                    var now = DateTime.Now;
-                    // subject.CreationDate = now;
                     subject.Title = requestSubject.Title;
                     subject.Description = requestSubject.Description;
-                    //subject.UserId = requestSubject.UserId;
                     db.SaveChanges();
+                    TempData["Alert"] = "Edited subject: " + subject.Title.ToString();
                 }
-                return RedirectToAction("Index");
-            } //catch (Exception e)
-              // {
-              //    System.Console.Error.WriteLine(e);
-              //     return View();
-              // }
+                else
+                {
+                    TempData["Alert"] = "Failed to edit subject: " + subject.Title.ToString();
+                    return View(subject);
+                }
+                return Redirect("/Category/Show/" + subject.CategoryId);
+            }
+            catch (Exception e)
+            {
+                TempData["Alert"] = "Failed to edit subject with error: " + e.Message;
+                return View();
+            }
         }
-        //Delete
+
         [HttpDelete]
         public ActionResult Delete(int id)
         {
             Subject subject = db.Subjects.Find(id);
             db.Subjects.Remove(subject);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            TempData["Alert"] = "Deleted subject: " + subject.Title.ToString();
+            return Redirect("/Category/Show/" + subject.CategoryId);
         }
     }
 }

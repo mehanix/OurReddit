@@ -10,10 +10,13 @@ namespace OurReddit.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
+        [StringLength(27, MinimumLength = 4, ErrorMessage = "Title whould have between 4 and 27 characters")]
+        [Required(ErrorMessage = "This field is mandatory")]
         public string Title { get; set; }
         public string Description { get; set; }
-        public string CreationDate { get; set; }
+        [Required]
+        public DateTime DateCreated { get; set; }
+        [Required(ErrorMessage = "This field is mandatory")]
         public int CategoryId { get; set; }
         
         //un subiect apartine unei categorii 
