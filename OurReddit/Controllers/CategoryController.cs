@@ -12,7 +12,7 @@ namespace OurReddit.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly Models.AppContext db = new Models.AppContext();
+        private readonly Models.ApplicationDbContext db = new Models.ApplicationDbContext();
 
         [HttpGet]
         [AlertFilter]

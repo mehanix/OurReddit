@@ -19,7 +19,7 @@ using System.Web;
 namespace OurReddit.Models
 {
     // Add new models here to make sure they auto-update :D
-    public class AppContext : DbContext
+  /*  public class AppContext : DbContext
     {
         public AppContext(): base("DBConnectionString") {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<AppContext,
@@ -28,6 +28,6 @@ namespace OurReddit.Models
         public DbSet<Category> Categories { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Message> Messages { get; set; }
-        public DbSet<User> Users { get; set; }
-    }
+      //  public DbSet<User> Users { get; set; }
+    }*/
 }

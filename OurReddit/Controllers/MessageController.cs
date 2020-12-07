@@ -10,7 +10,7 @@ namespace OurReddit.Controllers
 {
     public class MessageController : Controller
     {
-        private readonly Models.AppContext db = new Models.AppContext();
+        private readonly Models.ApplicationDbContext db = new Models.ApplicationDbContext();
      
         [HttpPost]
         public ActionResult New(Message message)

@@ -11,7 +11,7 @@ namespace OurReddit.Controllers
 {
     public class SubjectController : Controller
     {
-        private Models.AppContext db = new Models.AppContext();
+        private Models.ApplicationDbContext db = new Models.ApplicationDbContext();
         
         [HttpGet]
         [AlertFilter]
