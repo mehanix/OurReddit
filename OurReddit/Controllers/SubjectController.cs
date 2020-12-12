@@ -1,4 +1,5 @@
-﻿using OurReddit.ActionFilters;
+﻿using Microsoft.AspNet.Identity;
+using OurReddit.ActionFilters;
 using OurReddit.Models;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace OurReddit.Controllers
         
         [HttpGet]
         [AlertFilter]
+        // oricine poate vedea subiectele
         public ActionResult Show(int id)
         {
             Subject subject = db.Subjects.Find(id);
@@ -23,17 +25,24 @@ namespace OurReddit.Controllers
         }
 
         [HttpGet]
+        //Doar daca esti inregistrat poti crea subiect nou
+        [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult New(int id)
         {
+            Subject subject = new Subject();
+            subject.UserId = User.Identity.GetUserId();
             ViewBag.CategoryId = id;
             return View();
         }
 
         [HttpPost]
+        //Doar daca esti inregistrat poti crea subiect nou
+        [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult New(Subject subject)
         {
             try
             {
+                subject.UserId = User.Identity.GetUserId();
                 db.Subjects.Add(subject);
                 db.SaveChanges();
                 TempData["Alert"] = "Created new subject: " + subject.Title.ToString();
@@ -48,6 +57,8 @@ namespace OurReddit.Controllers
 
         [HttpGet]
         [AlertFilter]
+        //Doar daca esti inregistrat poti edita subiect nou
+        [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult Edit(int id)
         {
             Subject subject = db.Subjects.Find(id);
@@ -56,6 +67,8 @@ namespace OurReddit.Controllers
         }
 
         [HttpPut]
+        //Doar daca esti inregistrat poti edita subiect nou
+        [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult Edit(int id, Subject requestSubject)
         {
             try
@@ -83,6 +96,8 @@ namespace OurReddit.Controllers
         }
 
         [HttpDelete]
+        //Doar daca esti inregistrat poti edita subiect nou
+        [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult Delete(int id)
         {
             Subject subject = db.Subjects.Find(id);
