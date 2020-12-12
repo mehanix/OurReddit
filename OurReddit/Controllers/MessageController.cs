@@ -13,6 +13,9 @@ namespace OurReddit.Controllers
         private readonly Models.ApplicationDbContext db = new Models.ApplicationDbContext();
      
         [HttpPost]
+        //Doar daca esti inregistrat poti posta
+        [Authorize(Roles = "User,Moderator,Admin")]
+
         public ActionResult New(Message message)
         {
             try
@@ -31,6 +34,8 @@ namespace OurReddit.Controllers
 
         [HttpGet]
         [AlertFilter]
+        //Doar daca esti inregistrat poti edita
+        [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult Edit(int id)
         {
             Message message = db.Messages.Find(id);
@@ -39,6 +44,8 @@ namespace OurReddit.Controllers
         }
 
         [HttpPut]
+        //Doar daca esti inregistrat poti edita
+        [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult Edit(int id, Message requestMessage)
         {
             System.Diagnostics.Debug.WriteLine(requestMessage.Content);
@@ -61,6 +68,9 @@ namespace OurReddit.Controllers
         }
 
         [HttpDelete]
+        //Doar daca esti inregistrat poti sterge un mesaj
+        [Authorize(Roles = "User,Moderator,Admin")]
+
         public ActionResult Delete(int id)
         {
             Message message = db.Messages.Find(id);

@@ -23,5 +23,9 @@ namespace OurReddit.Models
         public virtual Category Category { get; set; }
         //o categorie are mai multe mesaje
         public virtual ICollection<Message> Messages { get; set; } //un subiect are mai multe mesaje
+
+        public string UserId { get; set; } // cine a creat subiectul
+
+        public virtual ApplicationUser User { get; set; }
     }
 }

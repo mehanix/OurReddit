@@ -16,6 +16,7 @@ namespace OurReddit.Controllers
 
         [HttpGet]
         [AlertFilter]
+        //oricine poate vedea categoriile
         public ActionResult Index()
         {
             var categories = from category in db.Categories
@@ -42,6 +43,8 @@ namespace OurReddit.Controllers
         }
 
         [HttpPost]
+        // doar admin poate crea categorie noua
+        [Authorize(Roles="Admin")]
         public ActionResult New(Category category)
         {
             try
@@ -60,6 +63,9 @@ namespace OurReddit.Controllers
         
         [HttpGet]
         [AlertFilter]
+        // doar admin poate modifica categoriile
+        [Authorize(Roles = "Admin")]
+
         public ActionResult Edit(int id)
         {
             Category category = db.Categories.Find(id);
@@ -68,6 +74,8 @@ namespace OurReddit.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin")]
+        // doar admin poate modifica categoriile
         public ActionResult Edit(int id, Category requestCategory)
         {
             try
@@ -94,6 +102,9 @@ namespace OurReddit.Controllers
         }
 
         [HttpDelete]
+        // doar admin poate sterge categoriile
+        [Authorize(Roles = "Admin")]
+
         public ActionResult Delete(int id)
         {
             Category category = db.Categories.Find(id);

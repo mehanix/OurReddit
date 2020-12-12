@@ -43,7 +43,7 @@ namespace OurReddit
                     UserManager.AddToRole(user.Id, "Admin");
                 }
             }
-            // adaug rol user
+            // adaug rol guest
             if (!roleManager.RoleExists("User"))
             {
                 var role = new IdentityRole();
