@@ -20,7 +20,7 @@
                 @Html.ActionLink("OurReddit", "Index", "Category", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-             
+
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
@@ -36,5 +36,12 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    @Scripts.Render("~/bundles/customScripts")
+
+    <script defer>
+        showPopup("@ViewBag.alert");
+    </script>
+
 </body>
 </html>

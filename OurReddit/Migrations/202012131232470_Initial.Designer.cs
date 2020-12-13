@@ -13,7 +13,7 @@ namespace OurReddit.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202012071944041_Initial"; }
+            get { return "202012131232470_Initial"; }
         }
         
         string IMigrationMetadata.Source

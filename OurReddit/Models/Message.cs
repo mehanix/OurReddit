@@ -18,11 +18,8 @@ namespace OurReddit.Models
         public bool Edited { get; set; }
         [Required(ErrorMessage = "This field is mandatory")]
         public int SubjectId { get; set; }
-        
-        //public string UserId { get; set; } //cine a scris msg
-
-        //un mesaj are 1 user ca autor
-        //public virtual User User { get; set; }
+        public string UserId { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         //un mesaj apartine unui singur subiect
         public virtual Subject Subject { get; set; }

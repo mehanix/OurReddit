@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using OurReddit.ActionFilters;
 using OurReddit.Models;
 
@@ -15,11 +16,11 @@ namespace OurReddit.Controllers
         [HttpPost]
         //Doar daca esti inregistrat poti posta
         [Authorize(Roles = "User,Moderator,Admin")]
-
         public ActionResult New(Message message)
         {
             try
             {
+                message.UserId = User.Identity.GetUserId();
                 db.Messages.Add(message);
                 db.SaveChanges();
                 TempData["Alert"] = "New message added.";
@@ -39,8 +40,16 @@ namespace OurReddit.Controllers
         public ActionResult Edit(int id)
         {
             Message message = db.Messages.Find(id);
-            ViewBag.Subject = message;
-            return View(message);
+            if (message.UserId == User.Identity.GetUserId() || User.IsInRole("Admin") || User.IsInRole("Moderator"))
+            {
+                ViewBag.Subject = message;
+                return View(message);
+            }
+            else
+            {
+                TempData["Alert"] = "nu ai drepturi";
+                return Redirect("/Subject/Show/" + message.SubjectId);
+            }
         }
 
         [HttpPut]
@@ -48,16 +57,23 @@ namespace OurReddit.Controllers
         [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult Edit(int id, Message requestMessage)
         {
-            System.Diagnostics.Debug.WriteLine(requestMessage.Content);
             try
             {
                 Message message = db.Messages.Find(id);
-                message.Content = requestMessage.Content;
-                message.Edited = true;
-                db.SaveChanges();
+                if (message.UserId == User.Identity.GetUserId() || User.IsInRole("Admin") || User.IsInRole("Moderator"))
+                {
+                    message.Content = requestMessage.Content;
+                    message.Edited = true;
+                    db.SaveChanges();
 
-                TempData["Alert"] = "Message Edited.";
-                return Redirect("/Subject/Show/" + message.SubjectId);
+                    TempData["Alert"] = "Message Edited.";
+                    return Redirect("/Subject/Show/" + message.SubjectId);
+                }
+                else
+                {
+                    TempData["Alert"] = "nu ai drepturi";
+                    return Redirect("/Subject/Show/" + message.SubjectId);
+                }
             }
             catch (Exception e)
             {
@@ -74,10 +90,18 @@ namespace OurReddit.Controllers
         public ActionResult Delete(int id)
         {
             Message message = db.Messages.Find(id);
-            db.Messages.Remove(message);
-            db.SaveChanges();
-            TempData["Alert"] = "Message Deleted";
-            return Redirect("/Subject/Show/" + message.SubjectId);
+            if (message.UserId == User.Identity.GetUserId() || User.IsInRole("Admin") || User.IsInRole("Moderator"))
+            {
+                db.Messages.Remove(message);
+                db.SaveChanges();
+                TempData["Alert"] = "Message Deleted";
+                return Redirect("/Subject/Show/" + message.SubjectId);
+            }
+            else
+            {
+                TempData["Alert"] = "nu ai drepturi";
+                return Redirect("/Subject/Show/" + message.SubjectId);
+            }
         }
     }
 }

@@ -26,6 +26,7 @@ namespace OurReddit.Models
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext,
     OurReddit.Migrations.Configuration>("DBConnectionString"));
         }
+
         public DbSet<Category> Categories { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Message> Messages { get; set; }

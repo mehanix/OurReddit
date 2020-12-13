@@ -6,16 +6,22 @@
     <h3>@category.Name</h3>
 
     <a href="/Category/Show/@category.Id">Show</a>
-    <a href="/Category/Edit/@category.Id">Edit</a>
-
-    <form method="post" action="/Category/Delete/@category.Id">
-        @Html.HttpMethodOverride(HttpVerbs.Delete)
-        <button type="submit">Delete</button>
-    </form>
+    
+    if (ViewBag.isAdmin)
+    {
+        <a href="/Category/Edit/@category.Id">Edit</a>
+        <form method="post" action="/Category/Delete/@category.Id">
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            <button type="submit">Delete</button>
+        </form>
+    }
 
     <br />
     <hr />
     <br />
 }
 
-<a href="/Category/New">Add new Category</a>
+@if(ViewBag.isAdmin)
+{
+    <a href="/Category/New">Add new Category</a>
+}
