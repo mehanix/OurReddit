@@ -1,4 +1,5 @@
-﻿using OurReddit.ActionFilters;
+﻿using Microsoft.AspNet.Identity;
+using OurReddit.ActionFilters;
 using OurReddit.Models;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace OurReddit.Controllers
         //oricine poate vedea categoriile
         public ActionResult Index()
         {
+            SetAccessRights();
             var categories = from category in db.Categories
                              orderby category.Name
                              select category;
@@ -30,6 +32,7 @@ namespace OurReddit.Controllers
         [AlertFilter]
         public ActionResult Show(int id)
         {
+            SetAccessRights();
             Category category = db.Categories.Find(id);
             ViewBag.Category = category;
             return View();
@@ -37,8 +40,10 @@ namespace OurReddit.Controllers
         
         [HttpGet]
         [AlertFilter]
+        [Authorize(Roles = "Admin")]
         public ActionResult New()
         {
+            SetAccessRights();
             return View();
         }
 
@@ -65,9 +70,9 @@ namespace OurReddit.Controllers
         [AlertFilter]
         // doar admin poate modifica categoriile
         [Authorize(Roles = "Admin")]
-
         public ActionResult Edit(int id)
         {
+            SetAccessRights();
             Category category = db.Categories.Find(id);
             ViewBag.Category = category;
             return View(category);
@@ -104,7 +109,6 @@ namespace OurReddit.Controllers
         [HttpDelete]
         // doar admin poate sterge categoriile
         [Authorize(Roles = "Admin")]
-
         public ActionResult Delete(int id)
         {
             Category category = db.Categories.Find(id);
@@ -112,6 +116,14 @@ namespace OurReddit.Controllers
             db.SaveChanges();
             TempData["Alert"] = "Deleted category: " + category.Name.ToString();
             return RedirectToAction("Index");
+        }
+
+        [NonAction]
+        private void SetAccessRights()
+        {
+            ViewBag.isAdmin = User.IsInRole("Admin");
+            ViewBag.isModerator = User.IsInRole("Moderator");
+            ViewBag.currentUserId = User.Identity.GetUserId();
         }
     }
 }

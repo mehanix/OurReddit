@@ -19,6 +19,7 @@ namespace OurReddit.Controllers
         // oricine poate vedea subiectele
         public ActionResult Show(int id)
         {
+            SetAccessRights();
             Subject subject = db.Subjects.Find(id);
             ViewBag.subject = subject;
             return View();
@@ -29,6 +30,7 @@ namespace OurReddit.Controllers
         [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult New(int id)
         {
+            SetAccessRights();
             Subject subject = new Subject();
             subject.UserId = User.Identity.GetUserId();
             ViewBag.CategoryId = id;
@@ -61,9 +63,18 @@ namespace OurReddit.Controllers
         [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult Edit(int id)
         {
+            SetAccessRights();
             Subject subject = db.Subjects.Find(id);
-            ViewBag.Subject = subject;
-            return View(subject);
+            if (subject.UserId == User.Identity.GetUserId() || User.IsInRole("Admin") || User.IsInRole("Moderator"))
+            {
+                ViewBag.Subject = subject;
+                return View(subject);
+            }
+            else
+            {
+                TempData["Alert"] = "N-ai voie !!!!!!!";
+                return Redirect("/Category/Show/" + subject.CategoryId);
+            }
         }
 
         [HttpPut]
@@ -74,19 +85,28 @@ namespace OurReddit.Controllers
             try
             {
                 Subject subject = db.Subjects.Find(id);
-                if (TryUpdateModel(subject))
+
+                if (subject.UserId == User.Identity.GetUserId() || User.IsInRole("Admin") || User.IsInRole("Moderator"))
                 {
-                    subject.Title = requestSubject.Title;
-                    subject.Description = requestSubject.Description;
-                    db.SaveChanges();
-                    TempData["Alert"] = "Edited subject: " + subject.Title.ToString();
+                    if (TryUpdateModel(subject))
+                    {
+                        subject.Title = requestSubject.Title;
+                        subject.Description = requestSubject.Description;
+                        db.SaveChanges();
+                        TempData["Alert"] = "Edited subject: " + subject.Title.ToString();
+                    }
+                    else
+                    {
+                        TempData["Alert"] = "Failed to edit subject: " + subject.Title.ToString();
+                        return View(subject);
+                    }
+                    return Redirect("/Category/Show/" + subject.CategoryId);
                 }
                 else
                 {
-                    TempData["Alert"] = "Failed to edit subject: " + subject.Title.ToString();
-                    return View(subject);
+                    TempData["Alert"] = "Nu ai voieeeee  ";
+                    return View();
                 }
-                return Redirect("/Category/Show/" + subject.CategoryId);
             }
             catch (Exception e)
             {
@@ -101,10 +121,27 @@ namespace OurReddit.Controllers
         public ActionResult Delete(int id)
         {
             Subject subject = db.Subjects.Find(id);
-            db.Subjects.Remove(subject);
-            db.SaveChanges();
-            TempData["Alert"] = "Deleted subject: " + subject.Title.ToString();
-            return Redirect("/Category/Show/" + subject.CategoryId);
+            
+            if (subject.UserId == User.Identity.GetUserId() || User.IsInRole("Admin") || User.IsInRole("Moderator"))
+            {
+                db.Subjects.Remove(subject);
+                db.SaveChanges();
+                TempData["Alert"] = "Deleted subject: " + subject.Title.ToString();
+                return Redirect("/Category/Show/" + subject.CategoryId);
+            }
+            else
+            {
+                TempData["Alert"] = "Nu se poateee ca nu esti suficient de bun si viata ta incompatibila cu stergerea de subiecte de discutie";
+                return Redirect("/Category/Show/" + subject.CategoryId);
+            }
+        }
+
+        [NonAction]
+        private void SetAccessRights()
+        {
+            ViewBag.isAdmin = User.IsInRole("Admin");
+            ViewBag.isModerator = User.IsInRole("Moderator");
+            ViewBag.currentUserId = User.Identity.GetUserId();
         }
     }
 }

@@ -3,26 +3,34 @@
 <p>@ViewBag.subject.Description</p>
 <br />
 
-<a href="/Subject/Edit/@ViewBag.subject.Id">Edit Subject</a>
-<form method="post" action="/Subject/Delete/@ViewBag.subject.Id">
-    @Html.HttpMethodOverride(HttpVerbs.Delete)
-    <button type="submit">Delete Subject</button>
-</form>
+@if(ViewBag.currentUserId == ViewBag.subject.UserId || ViewBag.isAdmin || ViewBag.isModerator)
+{
+    <a href="/Subject/Edit/@ViewBag.subject.Id">Edit Subject</a>
+    <form method="post" action="/Subject/Delete/@ViewBag.subject.Id">
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+        <button type="submit">Delete Subject</button>
+    </form>
+}
 
 <a href="/Category/Show/@ViewBag.subject.CategoryId">Back to Subject List</a>
 <br />
-<a href="/Subject/New">Add new Subject</a>
+<a href="/Subject/New/@ViewBag.subject.CategoryId">Add new Subject</a>
 <br />
 <br />
 
 @foreach (var message in ViewBag.subject.Messages)
 {
     <p>@message.Content</p>
-    <a href="/Message/Edit/@message.Id">Edit</a>
-    <form method="post" action="/Message/Delete/@message.Id">
-        @Html.HttpMethodOverride(HttpVerbs.Delete)
-        <button type="submit">Delete</button>
-    </form>
+    <p> @message.User.UserName </p>
+
+    if(ViewBag.currentUserId == message.UserId || ViewBag.isAdmin || ViewBag.isModerator)
+    {
+        <a href="/Message/Edit/@message.Id">Edit</a>
+        <form method="post" action="/Message/Delete/@message.Id">
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            <button type="submit">Delete</button>
+        </form>
+    }
 }
 <br />
 <br />

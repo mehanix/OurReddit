@@ -7,23 +7,33 @@
 {
     <h3><a href="/Subject/Show/@subject.Id">@subject.Title</a></h3>
     <p>@subject.Description</p>
-    <a href="/Subject/Edit/@subject.Id">Edit</a>
-    <form method="post" action="/Subject/Delete/@subject.Id">
-        @Html.HttpMethodOverride(HttpVerbs.Delete)
-        <button type="submit">Delete</button>
-    </form>
+    <p>@subject.User.UserName</p>
+
+    if (subject.UserId == ViewBag.currentUserId || ViewBag.isModerator || ViewBag.isAdmin)
+    {
+        <a href="/Subject/Edit/@subject.Id">Edit</a>
+        <form method="post" action="/Subject/Delete/@subject.Id">
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            <button type="submit">Delete</button>
+        </form>
+    }
 }
 <br />
 <br />
 <a href="/Subject/New/@ViewBag.category.Id">Add new Subject</a>
 
-<a href="/Category/Edit/@ViewBag.category.Id">Edit Category</a>
-<form method="post" action="/Category/Delete/@ViewBag.category.Id">
-    @Html.HttpMethodOverride(HttpVerbs.Delete)
-    <button type="submit">Delete Category</button>
-</form>
+@if (ViewBag.isAdmin)
+{
+    <a href="/Category/Edit/@ViewBag.category.Id">Edit Category</a>
+    <form method="post" action="/Category/Delete/@ViewBag.category.Id">
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+        <button type="submit">Delete Category</button>
+    </form>
+
+    <br />
+    <a href="/Category/New">Add new Category</a>
+    <br />
+}
+
 <hr />
 <a href="/Category/Index">Back to Categories</a>
-<br />
-<a href="/Category/New">Add new Category</a>
-<br />

@@ -25,6 +25,9 @@ namespace OurReddit
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/customScripts").Include(
+               "~/Scripts/showPopup.js"));
         }
     }
 }
