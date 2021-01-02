@@ -26,7 +26,19 @@ namespace OurReddit.Controllers
             var categories = from category in db.Categories
                              orderby category.Name
                              select category;
+
+            int currentPage = Convert.ToInt32(Request.Params.Get("pageNumber"));
+            int offset = currentPage * PER_PAGE;
+            int totalCategories = categories.Count();
+
+            categories = (IOrderedQueryable<Category>)categories.Skip(offset).Take(PER_PAGE);
+
             ViewBag.Categories = categories;
+            ViewBag.perPage = PER_PAGE;
+            ViewBag.total = totalCategories;
+            ViewBag.currentPage = currentPage;
+            ViewBag.lastPage = totalCategories / PER_PAGE + (totalCategories % PER_PAGE != 0 ? 1 : 0);
+
             return View();
         }
 
