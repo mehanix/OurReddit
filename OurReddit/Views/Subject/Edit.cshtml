@@ -14,8 +14,12 @@
     <br />
     @Html.Editor("Description")
     <br />
-    @Html.Label("Category", "Subject Category")
-    @Html.DropDownList("newCategory", new SelectList(Model.AllCategories, "Value", "Text", ViewBag.subjectCategory), null, new { @class = "form-control" });
+    if (ViewBag.isModerator || ViewBag.isAdmin)
+    {
+        @Html.Label("Category", "Subject Category")
+        @Html.DropDownList("newCategory", new SelectList(Model.AllCategories, "Value", "Text", ViewBag.subjectCategory), null, new { @class = "form-control" });
+    }
+
     <br />
     <button type="submit">Edit Subject</button>
 }

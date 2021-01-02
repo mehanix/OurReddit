@@ -13,7 +13,7 @@ namespace OurReddit.Controllers
     public class SubjectController : Controller
     {
         private Models.ApplicationDbContext db = new Models.ApplicationDbContext();
-        
+
         [HttpGet]
         [AlertFilter]
         // oricine poate vedea subiectele
@@ -99,8 +99,8 @@ namespace OurReddit.Controllers
                         var newCategoryId = HttpContext.Request.Params.Get("newCategory");
                         System.Diagnostics.Debug.WriteLine(newCategoryId);
 
-                        //   subject.Category = selectedCategory;
-                        subject.CategoryId = Int32.Parse(newCategoryId);
+                        if(newCategoryId != null)
+                            subject.CategoryId = Int32.Parse(newCategoryId);
                         db.SaveChanges();
                         System.Diagnostics.Debug.WriteLine("ohyes");
                         TempData["Alert"] = "Edited subject: " + subject.Title.ToString();
@@ -147,7 +147,7 @@ namespace OurReddit.Controllers
         public ActionResult Delete(int id)
         {
             Subject subject = db.Subjects.Find(id);
-            
+
             if (subject.UserId == User.Identity.GetUserId() || User.IsInRole("Admin") || User.IsInRole("Moderator"))
             {
                 db.Subjects.Remove(subject);
@@ -169,5 +169,7 @@ namespace OurReddit.Controllers
             ViewBag.isModerator = User.IsInRole("Moderator");
             ViewBag.currentUserId = User.Identity.GetUserId();
         }
+
     }
+
 }
