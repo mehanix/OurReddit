@@ -20,8 +20,18 @@
                 @Html.ActionLink("OurReddit", "Index", "Category", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
 
-                @Html.Partial("_LoginPartial")
+
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>
+                            @Html.ActionLink("Administrare utilizatori", "Index", "Users", new { area = "" }, new { @class = "nav-item" })
+                        </li>
+                    }
+                </ul>
+                    @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>

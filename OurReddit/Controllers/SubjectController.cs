@@ -102,12 +102,10 @@ namespace OurReddit.Controllers
                         if(newCategoryId != null)
                             subject.CategoryId = Int32.Parse(newCategoryId);
                         db.SaveChanges();
-                        System.Diagnostics.Debug.WriteLine("ohyes");
                         TempData["Alert"] = "Edited subject: " + subject.Title.ToString();
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine("ohno");
                         TempData["Alert"] = "Failed to edit subject: " + subject.Title.ToString();
                         return View(subject);
                     }
