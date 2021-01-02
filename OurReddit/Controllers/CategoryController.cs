@@ -15,6 +15,8 @@ namespace OurReddit.Controllers
     {
         private readonly Models.ApplicationDbContext db = new Models.ApplicationDbContext();
 
+        private static int PER_PAGE = 10;
+
         [HttpGet]
         [AlertFilter]
         //oricine poate vedea categoriile
@@ -34,7 +36,18 @@ namespace OurReddit.Controllers
         {
             SetAccessRights();
             Category category = db.Categories.Find(id);
+
+            int pageNumber = Convert.ToInt32(Request.Params.Get("pageNumber"));
+            int offset = pageNumber * PER_PAGE;
+            int totalSubjects = category.Subjects.Count();
+
+            category.Subjects = (ICollection<Subject>) category.Subjects.Skip(offset).Take(PER_PAGE);
+
             ViewBag.Category = category;
+            ViewBag.perPage = PER_PAGE;
+            ViewBag.total = totalSubjects;
+            ViewBag.lastPage = Math.Ceiling((float) totalSubjects / (float)PER_PAGE);
+
             return View();
         }
         
