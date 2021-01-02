@@ -14,5 +14,8 @@
     <br />
     @Html.Editor("Description")
     <br />
+    @Html.Label("Category", "Subject Category")
+    @Html.DropDownList("newSubject", new SelectList(Model.AllCategories, "Value", "Text", ViewBag.subject.CategoryId), null, new { @class = "form-control" });
+    <br />
     <button type="submit">Edit Subject</button>
 }

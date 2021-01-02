@@ -18,7 +18,7 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>44335</IISExpressSSLPort>
+    <IISExpressSSLPort>44385</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -177,9 +177,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202012131250531_Initial.cs" />
-    <Compile Include="Migrations\202012131250531_Initial.Designer.cs">
-      <DependentUpon>202012131250531_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\202101020904301_initial.cs" />
+    <Compile Include="Migrations\202101020904301_initial.Designer.cs">
+      <DependentUpon>202101020904301_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -276,8 +276,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202012131250531_Initial.resx">
-      <DependentUpon>202012131250531_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202101020904301_initial.resx">
+      <DependentUpon>202101020904301_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
