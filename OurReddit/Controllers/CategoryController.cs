@@ -37,16 +37,17 @@ namespace OurReddit.Controllers
             SetAccessRights();
             Category category = db.Categories.Find(id);
 
-            int pageNumber = Convert.ToInt32(Request.Params.Get("pageNumber"));
-            int offset = pageNumber * PER_PAGE;
+            int currentPage = Convert.ToInt32(Request.Params.Get("pageNumber"));
+            int offset = currentPage * PER_PAGE;
             int totalSubjects = category.Subjects.Count();
 
-            category.Subjects = (ICollection<Subject>) category.Subjects.Skip(offset).Take(PER_PAGE);
+            category.Subjects = category.Subjects.Skip(offset).Take(PER_PAGE).ToList();
 
             ViewBag.Category = category;
             ViewBag.perPage = PER_PAGE;
             ViewBag.total = totalSubjects;
-            ViewBag.lastPage = Math.Ceiling((float) totalSubjects / (float)PER_PAGE);
+            ViewBag.currentPage = currentPage;
+            ViewBag.lastPage = totalSubjects / PER_PAGE + (totalSubjects % PER_PAGE != 0 ? 1 : 0);
 
             return View();
         }
