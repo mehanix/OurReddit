@@ -48,6 +48,7 @@ namespace OurReddit.Controllers
             ViewBag.total = totalCategories;
             ViewBag.currentPage = currentPage;
             ViewBag.lastPage = totalCategories / PER_PAGE + (totalCategories % PER_PAGE != 0 ? 1 : 0);
+            ViewBag.SearchString = search;
 
             return View();
         }
@@ -57,19 +58,38 @@ namespace OurReddit.Controllers
         public ActionResult Show(int id)
         {
             SetAccessRights();
+
+            string search = "";
+            if (Request.Params.Get("search") != null)
+            {
+                search = Request.Params.Get("search").Trim();
+            }
+
             Category category = db.Categories.Find(id);
+
+            List<int> subjectIds = db.Subjects
+                .Where(s => s.Title.Contains(search) || s.Description.Contains(search))
+                .Select(s => s.Id).ToList();
+
+            List<int> messageIds = db.Messages
+                .Where(m => m.Content.Contains(search))
+                .Select(m => m.SubjectId).ToList();
+
+            List<int> mergedIds = subjectIds.Union(messageIds).ToList();
 
             int currentPage = Convert.ToInt32(Request.Params.Get("pageNumber"));
             int offset = currentPage * PER_PAGE;
+            category.Subjects = category.Subjects.Where(s => mergedIds.Contains(s.Id)).ToList();
             int totalSubjects = category.Subjects.Count();
-
             category.Subjects = category.Subjects.Skip(offset).Take(PER_PAGE).ToList();
+
 
             ViewBag.Category = category;
             ViewBag.perPage = PER_PAGE;
             ViewBag.total = totalSubjects;
             ViewBag.currentPage = currentPage;
             ViewBag.lastPage = totalSubjects / PER_PAGE + (totalSubjects % PER_PAGE != 0 ? 1 : 0);
+            ViewBag.SearchString = search;
 
             return View();
         }
