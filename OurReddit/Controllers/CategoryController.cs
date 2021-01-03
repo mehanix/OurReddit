@@ -4,6 +4,7 @@ using OurReddit.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Linq.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -23,7 +24,16 @@ namespace OurReddit.Controllers
         public ActionResult Index()
         {
             SetAccessRights();
+            string search = "";
+            if (Request.Params.Get("search") != null)
+            {
+                search = Request.Params.Get("search").Trim();
+            }
+
+            System.Diagnostics.Debug.WriteLine("Search: " + search);
+
             var categories = from category in db.Categories
+                             where category.Name.Contains(search)
                              orderby category.Name
                              select category;
 
