@@ -1,31 +1,33 @@
 ﻿
 @{
-    ViewBag.Title = "Afisare utilizatori";
+    ViewBag.Title = "👥 Administrare utilizatori";
 }
-<ol class="breadcrumb">
-    <li><h3>@ViewBag.Title</h3></li>
-</ol>
+<h2 class="page-header"> @ViewBag.Title</h2>
 
 @foreach (var user in ViewBag.UsersList)
 {
-    <div class="panel-heading">Nume utilizator: @user.UserName</div>
+<div class="panel panel-default">
+    <div class="panel-heading"><b>👤 @user.UserName</b></div>
     <div class="panel-body">
-        <i class="glyphicon glyphicon-envelope"></i> Email utilizator:
+        <i class="glyphicon glyphicon-envelope"></i> Email:
         <span class="label label-default">@user.Email</span>
-        <br /><br />
-
-        <a class="btn btn-sm btn-success" href="/Users/Show/@user.Id"> Afisare utilizator</a>
-        @using (Html.BeginForm(actionName: "Delete", controllerName: "Users", routeValues: new { id = @user.Id }))
-        {
-            @Html.HttpMethodOverride(HttpVerbs.Delete)
-            <br />
-            <button class="btn btn-danger" type="submit">Sterge utilizator</button>
-
-        }
-    <br />
-    <br />
     </div>
 
-}
+    <div class="panel-footer">
+
+        @using (Html.BeginForm(actionName: "Delete", controllerName: "Users", routeValues: new { id = @user.Id }))
+        {
+            <a class="btn btn-sm btn-success" href="/Users/Show/@user.Id"><i class="glyphicon-eye-open glyphicon"></i> Vezi profil </a>
+
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            <button class="btn btn-sm btn-danger" type="submit"><i class="glyphicon-trash glyphicon"></i> Sterge utilizator</button>
+
+        }
+    </div>
+
+
+</div>
+
+        }
 
 

@@ -1,34 +1,46 @@
 ﻿@model OurReddit.Models.ApplicationUser
 
 @{
-    ViewBag.Title = "Profil utilizator";
+    ViewBag.Title = "👤 Profil";
 }
 
-<ol class="breadcrumb">
-    <li><h3>@ViewBag.Title</h3></li>
-</ol>
+  <h2 class="page-header">@ViewBag.Title</h2>
 
-<div class="panel-heading">Nume utilizator: @Model.UserName</div>
+
 
 <div class="panel-body">
+    <ul class="list-group">
 
-    <i class="glyphicon glyphicon-envelope"></i> Email utilizator: <span class="label label-default">@Model.Email</span>
+        <li class="list-group-item">
+            <i class="glyphicon glyphicon-user"></i> Nume utilizator: @Model.UserName
+        </li>
+        <li class="list-group-item">
+            <i class="glyphicon glyphicon-envelope"></i> Email utilizator: <span class="label label-default">@Model.Email</span>
+        </li>
+        <li class="list-group-item">
+            <i class="glyphicon glyphicon-th-list"></i> Rol utilizator: @ViewBag.roleName
+        </li>
+        @if (@Model.PhoneNumber != null)
+        {
+            <li class="list-group-item">
+
+                <i class="glyphicon glyphicon-phone"></i>
+                Telefon utilizator:<span class="label label-default">@Model.PhoneNumber</span>
+
+            </li>
+         }
+        </ul>
     <br /><br />
-    <i class="glyphicon glyphicon-th-list"></i> Rol utilizator: @ViewBag.roleName
 
-    <br /><br />
 
-    @if (@Model.PhoneNumber != null)
-    {
-        <i class="glyphicon glyphicon-phone"></i>@:Telefon utilizator:<span class="label label-default">@Model.PhoneNumber</span>
 
-    }
+
 
 </div>
 
 
 <div class="panel-footer">
-    <a class="btn btn-sm btn-success" href="/Users/Edit/@Model.Id"> Editare date</a>
+    <a class="btn btn-sm btn-success" href="/Users/Edit/@Model.Id"><i class="glyphicon-edit glyphicon"></i> Editeaza profil</a>
 
     
 </div>
