@@ -54,9 +54,9 @@ namespace OurReddit
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "2813725725532921",
+               appSecret: "4a618fd666ad8ba7e9d8f705c3c801ee");
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{
