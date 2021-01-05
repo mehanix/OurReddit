@@ -1,40 +1,101 @@
 ﻿
-    <h2 class="page-header">📦 Categorii</h2>
-@foreach (var category in ViewBag.Categories)
-{
-<div class="panel panel-default">
+<h2 class="page-header">📦 Categorii</h2>
 
-    <div class="panel-heading article-heading">
-        <a href="/Category/Show/@category.Id" class="article-title">@category.Name</a>
+<div class="container">
+    <br />
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
+            <form class="card card-sm" method="GET">
+                <div class="card-body row no-gutters align-items-center">
+                    <div class="col-auto">
+                        <i class="fas fa-search h4 text-body"></i>
+                    </div>
+                    <div class="col">
+                        <input class="form-control form-control-lg form-controlborderless" type="text" name="search"
+                               value="@ViewBag.SearchString"
+                               placeholder="Search Categories">
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-lg btn-success"
+                                type="submit">
+                            Search
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="article-meta">
-        <span class="">
-            <i class="glyphicon glyphicon-time"></i>
-            Creat pe: @category.DateCreated
-        </span>
-    </div>
-    @if (ViewBag.isAdmin)
-    {
-        <div class="panel-body">
-            <div class="btn-group" role="group" aria-label="Basic example">
-
-                <form method="post" action="/Category/Delete/@category.Id">
-                    @Html.HttpMethodOverride(HttpVerbs.Delete)
-                    <a class="btn btn-success" href="/Category/Edit/@category.Id"><i class="glyphicon-edit glyphicon"></i> Edit</a>
-
-                    <button class="btn btn-danger" type="submit"><i class="glyphicon-trash glyphicon"></i> Delete</button>
-                </form>
-            </div>
-            </div>
-
-    }
 </div>
 
-          
+@using (Html.BeginForm("Index", "Category", FormMethod.Get))
+{
+    @Html.DropDownList("sort", @ViewBag.SortingMethods as List<SelectListItem>,
+        "Sort Categories", new { @class = "form-control" })
 
-            }
+    @Html.Hidden("search", (string) @ViewBag.SearchString)
 
-            @if (ViewBag.isAdmin)
+    @Html.Hidden("pageNumber", (string) @ViewBag.currentPage.ToString())
+
+    <button class="btn btn-sm btn-success" type="submit">
+        Sort
+    </button>
+}
+
+@foreach (var category in ViewBag.Categories)
+{
+    <div class="panel panel-default">
+        <div class="panel-heading article-heading">
+            <a href="/Category/Show/@category.Id" class="article-title">@category.Name</a>
+        </div>
+        <div class="article-meta">
+            <span class="">
+                <i class="glyphicon glyphicon-time"></i>
+                Creat pe: @category.DateCreated
+            </span>
+        </div>
+    
+        @if (ViewBag.isAdmin)
+        {
+            <div class="panel-body">
+                <div class="btn-group" role="group" aria-label="Basic example">
+
+                    <form method="post" action="/Category/Delete/@category.Id">
+                        @Html.HttpMethodOverride(HttpVerbs.Delete)
+                        <a class="btn btn-success" href="/Category/Edit/@category.Id"><i class="glyphicon-edit glyphicon"></i> Edit</a>
+
+                        <button class="btn btn-danger" type="submit"><i class="glyphicon-trash glyphicon"></i> Delete</button>
+                    </form>
+                </div>
+                </div>
+
+        }
+    </div>
+}
+
+@if (ViewBag.isAdmin)
+{
+    <a class="btn btn-primary btn-block" href="/Category/New"><i class="glyphicon-plus glyphicon"></i> Adauga o categorie noua</a>
+}
+
+<br />
+<br />
+<div>
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li>
+                <a href="/Category/Index/?sort=@(ViewBag.sortId)&pageNumber=0&search=@(ViewBag.SearchString)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            @for (int i = 0; i < ViewBag.lastPage; ++i)
             {
-                <a class="btn btn-primary btn-block" href="/Category/New"><i class="glyphicon-plus glyphicon"></i> Adauga o categorie noua</a>
+                <li><a href="/Category/Index/?sort=@(ViewBag.sortId)&pageNumber=@(i)&search=@(ViewBag.SearchString)">@(i + 1)</a></li>
             }
+            <li>
+                <a href="/Category/Index/?sort=@(ViewBag.sortId)&pageNumber=@(ViewBag.lastPage - 1)&search=@(ViewBag.SearchString)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
