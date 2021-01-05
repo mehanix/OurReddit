@@ -3,7 +3,7 @@
 <p>@ViewBag.subject.Description</p>
 <br />
 
-@if(ViewBag.currentUserId == ViewBag.subject.UserId || ViewBag.isAdmin || ViewBag.isModerator)
+@if (ViewBag.currentUserId == ViewBag.subject.UserId || ViewBag.isAdmin || ViewBag.isModerator)
 {
     <a href="/Subject/Edit/@ViewBag.subject.Id">Edit Subject</a>
     <form method="post" action="/Subject/Delete/@ViewBag.subject.Id">
@@ -18,12 +18,22 @@
 <br />
 <br />
 
+@using (Html.BeginForm("Show", "Subject", FormMethod.Get))
+{
+    @Html.DropDownList("sort", @ViewBag.SortingMethods as List<SelectListItem>,
+        "Sort Messajes", new { @class = "form-control" })
+
+    <button class="btn btn-sm btn-success" type="submit">
+        Sort
+    </button>
+}
+
 @foreach (var message in ViewBag.subject.Messages)
 {
     <p>@message.Content</p>
     <p> @message.User.UserName </p>
 
-    if(ViewBag.currentUserId == message.UserId || ViewBag.isAdmin || ViewBag.isModerator)
+    if (ViewBag.currentUserId == message.UserId || ViewBag.isAdmin || ViewBag.isModerator)
     {
         <a href="/Message/Edit/@message.Id">Edit</a>
         <form method="post" action="/Message/Delete/@message.Id">

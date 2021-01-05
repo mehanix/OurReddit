@@ -17,20 +17,28 @@ namespace OurReddit.Controllers
         private readonly Models.ApplicationDbContext db = new Models.ApplicationDbContext();
 
         private static int PER_PAGE = 10;
-
+        
+        private static List<SelectListItem> SortingMethods = new List<SelectListItem> 
+        {
+            new SelectListItem { Text = "Alphabetic ascending", Value = "1"},
+            new SelectListItem { Text = "Alphabetic descending", Value = "2"},
+            new SelectListItem { Text = "Newest First", Value = "3"},
+            new SelectListItem { Text = "Oldest First", Value = "4"},
+        };
+            
         [HttpGet]
         [AlertFilter]
         //oricine poate vedea categoriile
         public ActionResult Index()
         {
             SetAccessRights();
+            
+            // cautare
             string search = "";
             if (Request.Params.Get("search") != null)
             {
                 search = Request.Params.Get("search").Trim();
             }
-
-            System.Diagnostics.Debug.WriteLine("Search: " + search);
 
             var categories = from category in db.Categories
                              where category.Name.Contains(search)
@@ -41,6 +49,30 @@ namespace OurReddit.Controllers
             int offset = currentPage * PER_PAGE;
             int totalCategories = categories.Count();
 
+            // sortare
+            int sort = 0;
+            if (Request.Params.Get("sort") != null && Request.Params.Get("sort") != "")
+            {
+                sort = Convert.ToInt32(Request.Params.Get("sort"));
+            }
+
+            if (sort == 1)
+            {
+                categories = categories.OrderBy(c => c.Name);
+            } 
+            else if (sort == 2)
+            {
+                categories = categories.OrderByDescending(c => c.Name);
+            }
+            else if (sort == 3)
+            {
+                categories = categories.OrderByDescending(c => c.DateCreated);
+            }
+            else if (sort == 4)
+            {
+                categories = categories.OrderBy(c => c.DateCreated);
+            }
+
             categories = (IOrderedQueryable<Category>)categories.Skip(offset).Take(PER_PAGE);
 
             ViewBag.Categories = categories;
@@ -49,6 +81,8 @@ namespace OurReddit.Controllers
             ViewBag.currentPage = currentPage;
             ViewBag.lastPage = totalCategories / PER_PAGE + (totalCategories % PER_PAGE != 0 ? 1 : 0);
             ViewBag.SearchString = search;
+            ViewBag.SortingMethods = SortingMethods;
+            ViewBag.SortId = sort;
 
             return View();
         }
@@ -81,8 +115,32 @@ namespace OurReddit.Controllers
             int offset = currentPage * PER_PAGE;
             category.Subjects = category.Subjects.Where(s => mergedIds.Contains(s.Id)).ToList();
             int totalSubjects = category.Subjects.Count();
-            category.Subjects = category.Subjects.Skip(offset).Take(PER_PAGE).ToList();
 
+            // sortare
+            int sort = 0;
+            if (Request.Params.Get("sort") != null && Request.Params.Get("sort") != "")
+            {
+                sort = Convert.ToInt32(Request.Params.Get("sort"));
+            }
+
+            if (sort == 1)
+            {
+                category.Subjects = category.Subjects.OrderBy(s => s.Title).ToList();
+            }
+            else if (sort == 2)
+            {
+                category.Subjects = category.Subjects.OrderByDescending(s => s.Title).ToList();
+            }
+            else if (sort == 3)
+            {
+                category.Subjects = category.Subjects.OrderByDescending(s => s.DateCreated).ToList();
+            }
+            else if (sort == 4)
+            {
+                category.Subjects = category.Subjects.OrderBy(s => s.DateCreated).ToList();
+            }
+
+            category.Subjects = category.Subjects.Skip(offset).Take(PER_PAGE).ToList();
 
             ViewBag.Category = category;
             ViewBag.perPage = PER_PAGE;
@@ -90,6 +148,8 @@ namespace OurReddit.Controllers
             ViewBag.currentPage = currentPage;
             ViewBag.lastPage = totalSubjects / PER_PAGE + (totalSubjects % PER_PAGE != 0 ? 1 : 0);
             ViewBag.SearchString = search;
+            ViewBag.SortingMethods = SortingMethods;
+            ViewBag.SortId = sort;
 
             return View();
         }
