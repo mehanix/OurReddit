@@ -1,15 +1,17 @@
 ﻿
-<h1>Edit Category</h1>
+@model OurReddit.Models.Category
+    <h2 class="page-header"><i class="glyphicon glyphicon-edit"></i> Modifica categoria</h2>
 
 
-@using (Html.BeginForm(actionName: "Edit", controllerName: "Category"))
+@using (Html.BeginForm("Edit", "Category",
+     new { ReturnUrl = ViewBag.ReturnUrl },
+     FormMethod.Post, new { @class = "form-group" }))
 {
     @Html.HttpMethodOverride(HttpVerbs.Put)
-    @Html.Label("Name", "Category Name")
+    @Html.Label("Name", "Nume categorie")
     @Html.ValidationMessage("Name", new { @class = "text-danger" })
     <br />
-    @Html.Editor("Name")
+    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
     <br />
-    <br />
-    <button type="submit">Edit Categoriy</button>
+    <button class="btn btn-primary" type="submit"><i class="glyphicon-floppy-disk glyphicon"></i> Salveaza</button>
 }

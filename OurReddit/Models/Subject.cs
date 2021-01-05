@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace OurReddit.Models
 {
@@ -24,6 +25,7 @@ namespace OurReddit.Models
         //o categorie are mai multe mesaje
         public virtual ICollection<Message> Messages { get; set; } //un subiect are mai multe mesaje
 
+        public IEnumerable<SelectListItem> AllCategories { get; set; }
         public string UserId { get; set; } // cine a creat subiectul
 
         public virtual ApplicationUser User { get; set; }

@@ -43,10 +43,13 @@ namespace OurReddit.Migrations
                         Content = c.String(nullable: false),
                         Edited = c.Boolean(nullable: false),
                         SubjectId = c.Int(nullable: false),
+                        UserId = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Subjects", t => t.SubjectId, cascadeDelete: true)
-                .Index(t => t.SubjectId);
+                .ForeignKey("dbo.AspNetUsers", t => t.UserId)
+                .Index(t => t.SubjectId)
+                .Index(t => t.UserId);
             
             CreateTable(
                 "dbo.AspNetUsers",
@@ -122,6 +125,7 @@ namespace OurReddit.Migrations
         {
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.Subjects", "UserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Messages", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
@@ -133,6 +137,7 @@ namespace OurReddit.Migrations
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
+            DropIndex("dbo.Messages", new[] { "UserId" });
             DropIndex("dbo.Messages", new[] { "SubjectId" });
             DropIndex("dbo.Subjects", new[] { "UserId" });
             DropIndex("dbo.Subjects", new[] { "CategoryId" });

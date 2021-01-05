@@ -43,12 +43,32 @@ namespace OurReddit
                     UserManager.AddToRole(user.Id, "Admin");
                 }
             }
-            // adaug rol guest
+            // adaug rol user
             if (!roleManager.RoleExists("User"))
             {
                 var role = new IdentityRole();
                 role.Name = "User";
                 roleManager.Create(role);
+            }
+
+            if (!roleManager.RoleExists("Moderator"))
+            {
+                //adaug rol admin
+                var role = new IdentityRole();
+                role.Name = "Moderator";
+                roleManager.Create(role);
+
+                //adaug user admin
+                var user = new ApplicationUser();
+                user.UserName = "moderator@gmail.com";
+                user.Email = "moderator@gmail.com";
+
+                var adminCreated = UserManager.Create(user, "Beluga1!"); // :)
+
+                if (adminCreated.Succeeded)
+                {
+                    UserManager.AddToRole(user.Id, "Moderator");
+                }
             }
 
             //TODO: Adauga rol Moderator, Guest

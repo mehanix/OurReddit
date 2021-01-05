@@ -5,14 +5,21 @@
 {
     @Html.HttpMethodOverride(HttpVerbs.Put)
     @Html.Label("Title", "Subject Title")
-    @Html.ValidationMessage("Title", new { @class = "text-danger " })
+    @Html.ValidationMessage("Title", new { @class = "text-danger" })
     <br />
     @Html.Editor("Title")
     <br />
     @Html.Label("Description", "Subject Description")
-    @Html.ValidationMessage("Description", new { @class = "text-danger " })
+    @Html.ValidationMessage("Description", new { @class = "text-danger" })
     <br />
     @Html.Editor("Description")
+    <br />
+    if (ViewBag.isModerator || ViewBag.isAdmin)
+    {
+        @Html.Label("Category", "Subject Category")
+        @Html.DropDownList("newCategory", new SelectList(Model.AllCategories, "Value", "Text", ViewBag.subjectCategory), null, new { @class = "form-control" });
+    }
+
     <br />
     <button type="submit">Edit Subject</button>
 }

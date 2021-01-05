@@ -83,12 +83,14 @@ namespace OurReddit.Controllers
 
         [HttpGet]
         [AlertFilter]
-        //Doar daca esti inregistrat poti edita subiect nou
+        //Doar daca esti inregistrat poti edita subiect
         [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult Edit(int id)
         {
             SetAccessRights();
             Subject subject = db.Subjects.Find(id);
+            subject.AllCategories = GetAllCategories();
+            ViewBag.subjectCategory = subject.CategoryId;
             if (subject.UserId == User.Identity.GetUserId() || User.IsInRole("Admin") || User.IsInRole("Moderator"))
             {
                 ViewBag.Subject = subject;
@@ -102,20 +104,27 @@ namespace OurReddit.Controllers
         }
 
         [HttpPut]
-        //Doar daca esti inregistrat poti edita subiect nou
+        //Doar daca esti inregistrat poti edita subiect
         [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult Edit(int id, Subject requestSubject)
         {
+            Subject subject = db.Subjects.Find(id);
+            subject.AllCategories = GetAllCategories();
+            ViewBag.subjectCategory = subject.CategoryId;
             try
             {
-                Subject subject = db.Subjects.Find(id);
-
                 if (subject.UserId == User.Identity.GetUserId() || User.IsInRole("Admin") || User.IsInRole("Moderator"))
                 {
                     if (TryUpdateModel(subject))
                     {
                         subject.Title = requestSubject.Title;
                         subject.Description = requestSubject.Description;
+                        System.Diagnostics.Debug.WriteLine(HttpContext.Request.Params.Get("newCategory"));
+                        var newCategoryId = HttpContext.Request.Params.Get("newCategory");
+                        System.Diagnostics.Debug.WriteLine(newCategoryId);
+
+                        if(newCategoryId != null)
+                            subject.CategoryId = Int32.Parse(newCategoryId);
                         db.SaveChanges();
                         TempData["Alert"] = "Edited subject: " + subject.Title.ToString();
                     }
@@ -139,13 +148,28 @@ namespace OurReddit.Controllers
             }
         }
 
+        [NonAction]
+        public IEnumerable<SelectListItem> GetAllCategories()
+        {
+            var selectList = new List<SelectListItem>();
+            var categories = from category in db.Categories select category;
+            foreach (var category in categories)
+            {
+                selectList.Add(new SelectListItem
+                {
+                    Value = category.Id.ToString(),
+                    Text = category.Name.ToString()
+                });
+            }
+            return selectList;
+        }
         [HttpDelete]
         //Doar daca esti inregistrat poti edita subiect nou
         [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult Delete(int id)
         {
             Subject subject = db.Subjects.Find(id);
-            
+
             if (subject.UserId == User.Identity.GetUserId() || User.IsInRole("Admin") || User.IsInRole("Moderator"))
             {
                 db.Subjects.Remove(subject);

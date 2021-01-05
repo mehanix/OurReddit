@@ -1,14 +1,14 @@
 ﻿
+@model OurReddit.Models.Category
 
-<h1>Add new Category</h1>
+    <h2 class="page-header"><i class="glyphicon glyphicon-plus"></i> Adauga o noua categorie</h2>
 
 <form method="post" action="/Category/New">
-    @Html.Label("Name", "Category Name")
+    @Html.Label("Name", "Nume categorie")
+    @Html.ValidationMessage("Name", new { @class = "text-danger" })
     <br />
-    @Html.ValidationMessage("Name", new {@class = "text-danger "})
-    @Html.TextBox("Name", null, new { @class = "form-control" })
-    <br />
+    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
     @Html.Hidden("DateCreated", DateTime.UtcNow)
     <br />
-    <button type="submit">Add new Category</button>
+    <button class="btn btn-primary" type="submit"><i class="glyphicon-check glyphicon"></i> Adauga</button>
 </form>
