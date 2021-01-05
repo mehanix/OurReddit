@@ -13,7 +13,13 @@ namespace OurReddit.Controllers
     public class SubjectController : Controller
     {
         private Models.ApplicationDbContext db = new Models.ApplicationDbContext();
-        
+
+        private static List<SelectListItem> SortingMethods = new List<SelectListItem>
+        {
+            new SelectListItem { Text = "Recent First", Value = "1"},
+            new SelectListItem { Text = "Oldest First", Value = "2"},
+        };
+
         [HttpGet]
         [AlertFilter]
         // oricine poate vedea subiectele
@@ -21,7 +27,25 @@ namespace OurReddit.Controllers
         {
             SetAccessRights();
             Subject subject = db.Subjects.Find(id);
+
+            // sortare
+            int sort = 0;
+            if (Request.Params.Get("sort") != null && Request.Params.Get("sort") != "")
+            {
+                sort = Convert.ToInt32(Request.Params.Get("sort"));
+            }
+            
+            if (sort == 1)
+            {
+                subject.Messages = subject.Messages.OrderByDescending(m => m.DateCreated).ToList();
+            }
+            else if (sort == 2)
+            {
+                subject.Messages = subject.Messages.OrderBy(c => c.DateCreated).ToList();
+            }
+
             ViewBag.subject = subject;
+            ViewBag.SortingMethods = SortingMethods;
             return View();
         }
 
