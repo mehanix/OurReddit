@@ -4,9 +4,7 @@
     ViewBag.Title = "👤 Profil";
 }
 
-  <h2 class="page-header">@ViewBag.Title</h2>
-
-
+<h2 class="page-header">@ViewBag.Title</h2>
 
 <div class="panel-body">
     <ul class="list-group">
@@ -26,22 +24,14 @@
 
                 <i class="glyphicon glyphicon-phone"></i>
                 Telefon utilizator:<span class="label label-default">@Model.PhoneNumber</span>
-
             </li>
          }
         </ul>
     <br /><br />
-
-
-
-
-
 </div>
 
 
 <div class="panel-footer">
     <a class="btn btn-sm btn-success" href="/Users/Edit/@Model.Id"><i class="glyphicon-edit glyphicon"></i> Editeaza profil</a>
-
-    
 </div>
 

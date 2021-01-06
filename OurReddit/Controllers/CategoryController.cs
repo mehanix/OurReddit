@@ -16,14 +16,14 @@ namespace OurReddit.Controllers
     {
         private readonly Models.ApplicationDbContext db = new Models.ApplicationDbContext();
 
-        private static int PER_PAGE = 10;
+        private static int PER_PAGE = 5;
         
         private static List<SelectListItem> SortingMethods = new List<SelectListItem> 
         {
-            new SelectListItem { Text = "Alphabetic ascending", Value = "1"},
-            new SelectListItem { Text = "Alphabetic descending", Value = "2"},
-            new SelectListItem { Text = "Newest First", Value = "3"},
-            new SelectListItem { Text = "Oldest First", Value = "4"},
+            new SelectListItem { Text = "Alfabetic crescator", Value = "1"},
+            new SelectListItem { Text = "Alfabetic descrescator", Value = "2"},
+            new SelectListItem { Text = "Cele mai recente primele", Value = "3"},
+            new SelectListItem { Text = "Cele mai vechi primele", Value = "4"},
         };
             
         [HttpGet]
@@ -172,12 +172,12 @@ namespace OurReddit.Controllers
             {
                 db.Categories.Add(category);
                 db.SaveChanges();
-                TempData["Alert"] = "Created new category: " + category.Name.ToString();
+                TempData["Alert"] = "Ai creat o categorie noua: " + category.Name.ToString();
                 return RedirectToAction("Index");
             }
             catch (Exception e)
             {
-                TempData["Alert"] = "Failed to create category with: " + e.Message;
+                TempData["Alert"] = "Eroare la crearea categoriei";
                 return View();
             }
         }
@@ -206,18 +206,18 @@ namespace OurReddit.Controllers
                 {
                     category.Name = requestCategory.Name;
                     db.SaveChanges();
-                    TempData["Alert"] = "Edited category name: " + category.Name.ToString();
+                    TempData["Alert"] = "Ai editat categoria: " + category.Name.ToString();
                 }
                 else
                 {
-                    TempData["Alert"] = "Failed to edit category: " + category.Name.ToString();
+                    TempData["Alert"] = "Eroare la editarea categoriei";
                     return View(category);
                 }
                 return RedirectToAction("Index");
             } 
             catch (Exception e)
             {
-                TempData["Alert"] = "Failed to edit category with error: " + e.Message;
+                TempData["Alert"] = "Eroare la editarea categoriei";
                 return View();
             }
         }
@@ -230,7 +230,7 @@ namespace OurReddit.Controllers
             Category category = db.Categories.Find(id);
             db.Categories.Remove(category);
             db.SaveChanges();
-            TempData["Alert"] = "Deleted category: " + category.Name.ToString();
+            TempData["Alert"] = "Ai sters categoria: " + category.Name.ToString();
             return RedirectToAction("Index");
         }
 

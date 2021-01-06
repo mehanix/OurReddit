@@ -11,9 +11,9 @@ namespace OurReddit.Models
     {
         [Key]
         public int Id{ get; set; }
-        [MinLength(4, ErrorMessage = "Name too short")]
-        [MaxLength(27, ErrorMessage = "Name too long")]
-        [Required(ErrorMessage = "This field is mandatory")]
+        [MinLength(4, ErrorMessage = "Numele Categoriei este prea scurt")]
+        [MaxLength(27, ErrorMessage = "Numele Categoriei este prea lung")]
+        [Required(ErrorMessage = "Campul este obligatoriu")]
         public string Name { get; set; }
         [Required]
         public DateTime DateCreated { get; set; }

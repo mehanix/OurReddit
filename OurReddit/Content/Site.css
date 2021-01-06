@@ -70,13 +70,13 @@ textarea {
     padding: 15px;
 }
 
-    .article-meta:hover {
-        background-color: #fafafa;
-    }
+.article-meta:hover {
+    background-color: #fafafa;
+}
 
-    .article-meta > * {
-        display: block;
-    }
+.article-meta > * {
+    display: block;
+}
 
 .full-width {
     width: 100%;
@@ -206,4 +206,10 @@ footer {
 .entry .description {
     margin-top: 10px;
     padding-bottom:6px;
+}
+
+.our-logo {
+    font-family: 'East Sea Dokdo', cursive;
+    font-size: 3.5rem!important;
+    font-weight: bold;
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -23,13 +24,13 @@ namespace OurReddit.Controllers
                 message.UserId = User.Identity.GetUserId();
                 db.Messages.Add(message);
                 db.SaveChanges();
-                TempData["Alert"] = "New message added.";
+                TempData["Alert"] = "Ai adaugat un nou mesaj";
                 return Redirect("/Subject/Show/" + message.SubjectId);
             }
             catch (Exception e)
             {
-                TempData["Alert"] = "Failed to add message: " + e.Message;
-                return Redirect("/Subject/Show/" + message.SubjectId);
+                TempData["Alert"] = "Nu poti adauga un mesaj gol";
+                return Redirect("/Subject/Show/" + message.SubjectId); ;
             }
         }
 
@@ -47,7 +48,7 @@ namespace OurReddit.Controllers
             }
             else
             {
-                TempData["Alert"] = "nu ai drepturi";
+                TempData["Alert"] = "nu ai suficiente drepturi";
                 return Redirect("/Subject/Show/" + message.SubjectId);
             }
         }
@@ -66,19 +67,19 @@ namespace OurReddit.Controllers
                     message.Edited = true;
                     db.SaveChanges();
 
-                    TempData["Alert"] = "Message Edited.";
+                    TempData["Alert"] = "Mesajul a fost editat";
                     return Redirect("/Subject/Show/" + message.SubjectId);
                 }
                 else
                 {
-                    TempData["Alert"] = "nu ai drepturi";
+                    TempData["Alert"] = "nu ai suficiente drepturi";
                     return Redirect("/Subject/Show/" + message.SubjectId);
                 }
             }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine("exception");
-                TempData["Alert"] = "Failed to edit subject with error: " + e.Message;
+                TempData["Alert"] = "Eroare la editarea mesajului";
                 return View();
             }
         }
@@ -94,12 +95,12 @@ namespace OurReddit.Controllers
             {
                 db.Messages.Remove(message);
                 db.SaveChanges();
-                TempData["Alert"] = "Message Deleted";
+                TempData["Alert"] = "Mesajul a fost sters";
                 return Redirect("/Subject/Show/" + message.SubjectId);
             }
             else
             {
-                TempData["Alert"] = "nu ai drepturi";
+                TempData["Alert"] = "nu ai suficiente drepturi";
                 return Redirect("/Subject/Show/" + message.SubjectId);
             }
         }
