@@ -10,7 +10,7 @@
 
     @Html.Label("Content", "Continutul Mesajului")
     @Html.ValidationMessage("Content", new { @class = "text-danger" })
-    @Html.TextBoxFor(m => m.Content, new { @class = "form-control" })
+    @Html.TextAreaFor(m => m.Content, new { @class = "form-control" })
     <br />
 
     @Html.Hidden("Edited", true)

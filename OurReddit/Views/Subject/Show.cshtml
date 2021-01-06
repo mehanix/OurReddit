@@ -1,4 +1,5 @@
-﻿
+﻿<br />
+<a class="btn btn-default" href="/Category/Show/@ViewBag.subject.CategoryId"><span aria-hidden="true">&#9664; Inapoi la Subiecte</span></a>
 <br />
 <br />
 
@@ -6,6 +7,11 @@
     <div class="panel-heading article-heading">
         <a href="/Subject/Show/@ViewBag.subject.Id" class="article-title">@ViewBag.subject.Title</a>
     </div>
+
+    <div class="article-content">
+        @ViewBag.subject.Description
+    </div>
+
 
     <div class="article-meta">
         <span class="meta flex-row">
@@ -20,13 +26,9 @@
         </span>
     </div>
 
-    <div class="article-content">
-        @ViewBag.subject.Description
-    </div>
-
     @if (ViewBag.subject.UserId == ViewBag.currentUserId || ViewBag.isModerator || ViewBag.isAdmin)
     {
-        <div class="panel-body">
+        <div class="panel-footer">
             <div class="btn-group" role="group">
                 <form method="post" action="/Subject/Delete/@ViewBag.subject.Id">
                     @Html.HttpMethodOverride(HttpVerbs.Delete)
@@ -38,75 +40,74 @@
     }
 </div>
 
-<a class="btn btn-default" href="/Category/Show/@ViewBag.subject.CategoryId"><span aria-hidden="true">&#9664; Inapoi la Subiecte</span></a>
+<br />
+<h3>
+    <div class="col-lg-6">Raspunsuri</div>
+    @using (Html.BeginForm("Show", "Subject", FormMethod.Get, new { @class = "col-lg-6" }))
+    {
+        if (ViewBag.total != 0)
+        {
+            <div class="form-group">
+                @Html.DropDownList("sort", @ViewBag.SortingMethods as List<SelectListItem>,
+                         "Sorteaza Mesajele", new
+                         {
+                             @class = "col-md-6 form-control form-controlborderless",
+                             @style = "margin-right:10px;"
+                         })
+
+                <button class="col-md-2 btn btn-success" type="submit">
+                    Sorteaza
+                </button>
+            </div>
+        }
+    }
+
+</h3>
 
 <br />
-<h3 class="page-header">Mesaje</h3>
+<hr />
 
-@if (ViewBag.total != 0)
-{
-    <div class="container">
-        <div class="row">
-            @using (Html.BeginForm("Show", "Subject", FormMethod.Get, new { @class = "col-lg-6" }))
-            {
-                <div class="row">
-                    @Html.DropDownList("sort", @ViewBag.SortingMethods as List<SelectListItem>,
-                        "Sorteaza Mesajele", new
-                             {
-                            @class = "col-md-4 form-control form-controlborderless",
-                            @style = "margin-right:10px;"
-                        })
-
-                    <button class="col-md-2 btn btn-success" type="submit">
-                        Sorteaza
-                    </button>
-                </div>
-            }
-        </div>
-    </div>
-}
-
-<br />
- 
 <div class="messages entries">
     @foreach (var message in ViewBag.subject.Messages)
     {
-    <div class="messages entry">
-        <div class="img"></div>
-        <div class="content">
-            <div class="title"> 
-                @message.User.UserName
-                @if (message.Edited == true)
-                {
-                    <span> &nbsp;  <i class="glyphicon-pencil glyphicon"></i></span>
-                }
-            </div>
-            <div class="date"> @message.DateCreated.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ro-RO")) </div>
-            <div class="description"> @message.Content </div>
-        </div>
-
-        @if (ViewBag.currentUserId == message.UserId || ViewBag.isAdmin || ViewBag.isModerator)
-        {
-            <div class="panel-body">
-                <div class="btn-group" role="group">
-                    <form method="post" action="/Message/Delete/@message.Id">
-                        <a style="margin-right: 10px;" class="btn btn-success" href="/Message/Edit/@message.Id"><i class="glyphicon-edit glyphicon"></i> Edit</a>
-                        @Html.HttpMethodOverride(HttpVerbs.Delete)
-                        <button class="btn btn-danger" type="submit"><i class="glyphicon-trash glyphicon"></i> Delete</button>
-                    </form>
+        <div class="messages entry">
+            <div class="img"></div>
+            <div class="content">
+                <div class="title">
+                    @message.User.UserName
+                    @if (message.Edited == true)
+                    {
+                        <span> &nbsp;  <i class="glyphicon-pencil glyphicon"></i></span>
+                    }
                 </div>
+                <div class="date"> @message.DateCreated.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("ro-RO")) </div>
+                <div class="description"> @message.Content </div>
             </div>
-        }
-    </div>
+
+            @if (ViewBag.currentUserId == message.UserId || ViewBag.isAdmin || ViewBag.isModerator)
+            {
+                <div class="panel-body">
+                    <div class="btn-group" role="group">
+                        <form method="post" action="/Message/Delete/@message.Id">
+                            <a style="margin-right: 10px;" class="btn btn-success" href="/Message/Edit/@message.Id"><i class="glyphicon-edit glyphicon"></i> Edit</a>
+                            @Html.HttpMethodOverride(HttpVerbs.Delete)
+                            <button class="btn btn-danger" type="submit"><i class="glyphicon-trash glyphicon"></i> Delete</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
     }
 </div>
 
 
-<form class="form-inline" method="post" action="/Message/New">
+<form class="form" method="post" action="/Message/New">
     @Html.Hidden("SubjectId", (object)ViewBag.subject.Id)
     @Html.Hidden("DateCreated", DateTime.UtcNow)
     @Html.Hidden("Edited", false)
     @Html.ValidationMessage("Content", new { @class = "text-danger" })
-    @Html.TextBox("Content", null, "Mesajul Tau", new { @class = "form-control" })
+    @Html.Label("Trimite mesajul tau")
+    @Html.TextArea("Content", null, 3, 1000, new { @class = "form-control" })
+    <br />
     <button style="margin-left: 10px;" class="btn btn-success" type="submit"><i class="glyphicon-plus glyphicon"></i> Adauga un nou mesaj</button>
 </form>
