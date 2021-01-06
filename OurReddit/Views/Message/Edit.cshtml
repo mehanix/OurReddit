@@ -1,26 +1,19 @@
 ﻿
-@using (Html.BeginForm(actionName: "Edit", controllerName: "Message"))
+@model OurReddit.Models.Message
+<h2 class="page-header"><i class="glyphicon glyphicon-edit"></i> Modifica Mesajul</h2>
+
+
+@using (Html.BeginForm("Edit", "Message", new { @class = "form-group" }))
 {
     @Html.AntiForgeryToken()
     @Html.HttpMethodOverride(HttpVerbs.Put)
 
-    <div class="form-horizontal">
-        <h4>Edit this message</h4>
-        <hr />
+    @Html.Label("Content", "Continutul Mesajului")
+    @Html.ValidationMessage("Content", new { @class = "text-danger" })
+    @Html.TextBoxFor(m => m.Content, new { @class = "form-control" })
+    <br />
 
-        <div class="form-group">
-            @Html.Label("Content", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.Editor("Content", new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessage("Content", new { @class = "text-danger " })
-            </div>
-            @Html.Hidden("Edited", false)
-        </div>
+    @Html.Hidden("Edited", true)
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <button type="submit" class="btn btn-default">Save</button>
-            </div>
-        </div>
-    </div>
+    <button class="btn btn-primary" type="submit"><i class="glyphicon-floppy-disk glyphicon"></i> Salveaza</button>
 }

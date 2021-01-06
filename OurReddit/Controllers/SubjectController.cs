@@ -45,6 +45,7 @@ namespace OurReddit.Controllers
             }
 
             ViewBag.subject = subject;
+            ViewBag.total = subject.Messages.Count();
             ViewBag.SortingMethods = SortingMethods;
             return View();
         }

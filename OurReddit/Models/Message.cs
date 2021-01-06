@@ -11,7 +11,7 @@ namespace OurReddit.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        public string DateCreated { get; set; }
+        public DateTime DateCreated { get; set; }
         [Required]
         [MinLength(1, ErrorMessage = "Cannot create empty message")]
         public string Content { get; set; }

@@ -14,6 +14,8 @@ namespace OurReddit.Models
         [StringLength(27, MinimumLength = 4, ErrorMessage = "Title whould have between 4 and 27 characters")]
         [Required(ErrorMessage = "This field is mandatory")]
         public string Title { get; set; }
+        [StringLength(500, MinimumLength = 10, ErrorMessage = "Description is between 4 and 27 characters")]
+        [Required(ErrorMessage = "This field is mandatory")]
         public string Description { get; set; }
         [Required]
         public DateTime DateCreated { get; set; }

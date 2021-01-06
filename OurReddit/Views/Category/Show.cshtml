@@ -3,100 +3,79 @@
 
 <br />
 
-<div class="container">
-    <br />
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-10 col-lg-8">
-            <form class="card card-sm" method="GET">
-                <div class="card-body row no-gutters align-items-center">
-                    <div class="col-auto">
-                        <i class="fas fa-search h4 text-body"></i>
-                    </div>
-                    <div class="col">
-                        <input class="form-control form-control-lg form-controlborderless" type="text" name="search"
-                               value="@ViewBag.SearchString"
-                               placeholder="Search Subjects">
-                    </div>
-                    <div class="col">
-                        <button class="btn btn-lg btn-success"
-                                type="submit">
-                            Search
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+@{
+    ViewBag.What = "Subiecte";
+}
 
-@using (Html.BeginForm("Show", "Category", FormMethod.Get))
+@if(ViewBag.total != 0)
 {
-    @Html.DropDownList("sort", @ViewBag.SortingMethods as List<SelectListItem>,
-        "Sort Subjects", new { @class = "form-control" })
-
-    @Html.Hidden("search", (string)@ViewBag.SearchString)
-
-    @Html.Hidden("pageNumber", (string)@ViewBag.currentPage.ToString())
-
-    <button class="btn btn-sm btn-success" type="submit">
-        Sort
-    </button>
+    @Html.Partial("_SearchSort")
 }
 
 @foreach (var subject in ViewBag.category.Subjects)
 {
-    <h3><a href="/Subject/Show/@subject.Id">@subject.Title</a></h3>
-    <p>@subject.Description</p>
-    <p>@subject.User.UserName</p>
+    <div class="panel panel-default">
+        <div class="panel-heading article-heading">
+            <a href="/Subject/Show/@subject.Id" class="article-title">@subject.Title</a>
+        </div>
 
-    if (subject.UserId == ViewBag.currentUserId || ViewBag.isModerator || ViewBag.isAdmin)
-    {
-        <a href="/Subject/Edit/@subject.Id">Edit</a>
-        <form method="post" action="/Subject/Delete/@subject.Id">
-            @Html.HttpMethodOverride(HttpVerbs.Delete)
-            <button type="submit">Delete</button>
-        </form>
-    }
+        <div class="article-meta">
+            <span class="meta flex-row">
+                <span class="flex-container">
+                    <i class="glyphicon glyphicon-user"></i>
+                    @subject.User.UserName
+                </span>
+                <span class="flex-container">
+                    <i class="glyphicon glyphicon-time"></i>
+                    @subject.DateCreated.ToString("dddd, dd MMMM yyyy HH:mm:ss", new System.Globalization.CultureInfo("ro-RO"))
+                </span>
+            </span>
+        </div>
+
+        <div class="article-content">
+            @subject.Description
+        </div>
+
+        @if (subject.UserId == ViewBag.currentUserId || ViewBag.isModerator || ViewBag.isAdmin)
+        {
+            <div class="panel-body">
+                <div class="btn-group" role="group">
+                    <form method="post" action="/Subject/Delete/@subject.Id">
+                        @Html.HttpMethodOverride(HttpVerbs.Delete)
+                        <a style="margin-right: 10px;" class="btn btn-success" href="/Subject/Edit/@subject.Id"><i class="glyphicon-edit glyphicon"></i> Editeaza</a>
+                        <button class="btn btn-danger" type="submit"><i class="glyphicon-trash glyphicon"></i> Sterge</button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
 }
-<br />
-<br />
-<div>
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            <li>
-                <a href="/Category/Show/@(ViewBag.category.Id)?sort=@(ViewBag.sortId)&pageNumber=0&search=@(ViewBag.SearchString)" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            @for (int i = 0; i < ViewBag.lastPage; ++i)
-            {
-                <li><a href="/Category/Show/@(ViewBag.category.Id)?sort=@(ViewBag.sortId)&pageNumber=@(i)&search=@(ViewBag.SearchString)">@(i + 1)</a></li>
-            }
-            <li>
-                <a href="/Category/Show/@(ViewBag.category.Id)?sort=@(ViewBag.sortId)&pageNumber=@(ViewBag.lastPage - 1)&search=@(ViewBag.SearchString)" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</div>
 
+<a class="btn btn-primary btn-block" href="/Subject/New/@ViewBag.category.Id"><i class="glyphicon-plus glyphicon"></i> Adauga un subiect nou</a>
 <br />
-<br />
-<a href="/Subject/New/@ViewBag.category.Id">Add new Subject</a>
+<a class="btn btn-default" href="/Category/Index"><span aria-hidden="true">&#9664; Inapoi la Categorii</span></a>
 
-@if (ViewBag.isAdmin)
+@if (ViewBag.total != 0)
 {
-    <a href="/Category/Edit/@ViewBag.category.Id">Edit Category</a>
-    <form method="post" action="/Category/Delete/@ViewBag.category.Id">
-        @Html.HttpMethodOverride(HttpVerbs.Delete)
-        <button type="submit">Delete Category</button>
-    </form>
-
     <br />
-    <a href="/Category/New">Add new Category</a>
-    <br />
+    <div>
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li>
+                    <a href="/Category/Show/@(ViewBag.category.Id)?sort=@(ViewBag.sortId)&pageNumber=0&search=@(ViewBag.SearchString)" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                @for (int i = 0; i < ViewBag.lastPage; ++i)
+                {
+                    <li><a href="/Category/Show/@(ViewBag.category.Id)?sort=@(ViewBag.sortId)&pageNumber=@(i)&search=@(ViewBag.SearchString)">@(i + 1)</a></li>
+                }
+                <li>
+                    <a href="/Category/Show/@(ViewBag.category.Id)?sort=@(ViewBag.sortId)&pageNumber=@(ViewBag.lastPage - 1)&search=@(ViewBag.SearchString)" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 }
-
-<hr />
-<a href="/Category/Index">Back to Categories</a>

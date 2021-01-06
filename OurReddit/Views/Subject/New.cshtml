@@ -5,14 +5,14 @@
     <br />
     @Html.Hidden("DateCreated", DateTime.UtcNow)
     <br />
-    @Html.Label("Title", "Subject Title")
+    @Html.Label("Title", "Titlul Subiectului")
     <br />
     @Html.ValidationMessage("Title", new { @class = "text-danger " })
     @Html.TextBox("Title", null, new { @class = "form-control" })
     <br />
     @Html.ValidationMessage("Description", new { @class = "text-danger " })
-    @Html.Label("Description", "Subject Description")
+    @Html.Label("Description", "Descrierea Subiectului")
     <br />
     @Html.TextBox("Description", null, new { @class = "form-control" })
-    <button type="submit">Add Subject</button>
+    <button type="submit">Adauga un subiect nou</button>
 </form>

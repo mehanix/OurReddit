@@ -21,9 +21,6 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-
-
-
                     @if (User.IsInRole("Admin"))
                     {
                         <li>
@@ -35,11 +32,14 @@
             </div>
         </div>
     </div>
+
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Nix & Ștef 🍉</p>
+            <div class="footer-content">
+                <p>&copy; @DateTime.Now.Year - Nix & Ștef 🍉</p>
+            </div>
         </footer>
     </div>
 
