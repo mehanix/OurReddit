@@ -2,6 +2,6 @@
 
 An open discussion project.
 
-## DB
+## Legendary original DB
 
-![diag concept](https://i.imgur.com/PuFr4QX.png)\
+![diag concept](https://i.imgur.com/PuFr4QX.png)
