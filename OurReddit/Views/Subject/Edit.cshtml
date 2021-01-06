@@ -1,19 +1,21 @@
-﻿
-<h1>Edit Subject</h1>
+﻿@model OurReddit.Models.Subject
 
-@using (Html.BeginForm(actionName: "Edit", controllerName: "Subject"))
+<h2 class="page-header"><i class="glyphicon glyphicon-edit"></i> Editeaza Subiectul</h2>
+
+@using (Html.BeginForm(actionName: "Edit", controllerName: "Subject", routeValues: new { id = Model.Id }))
 {
     @Html.HttpMethodOverride(HttpVerbs.Put)
+
     @Html.Label("Title", "Subject Title")
     @Html.ValidationMessage("Title", new { @class = "text-danger" })
+    @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
     <br />
-    @Html.Editor("Title")
-    <br />
+
     @Html.Label("Description", "Subject Description")
     @Html.ValidationMessage("Description", new { @class = "text-danger" })
+    @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
     <br />
-    @Html.Editor("Description")
-    <br />
+
     if (ViewBag.isModerator || ViewBag.isAdmin)
     {
         @Html.Label("Category", "Subject Category")
@@ -21,5 +23,5 @@
     }
 
     <br />
-    <button type="submit">Edit Subject</button>
+    <button class="btn btn-success" type="submit"><i class="glyphicon-check glyphicon"></i> Editeaza Subiectul</button>
 }
