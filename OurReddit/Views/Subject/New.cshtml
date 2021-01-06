@@ -1,18 +1,23 @@
 ﻿
+@model OurReddit.Models.Subject
 
-<form method="post" action="/Subject/New">
+<h2 class="page-header"><i class="glyphicon glyphicon-plus"></i> Adauga un Subiect nou</h2>
+
+@using (Html.BeginForm(actionName: "New", controllerName: "Subject", routeValues: new { id = ViewBag.CategoryId }))
+{
+    @Html.AntiForgeryToken()
     @Html.Hidden("CategoryId", (object)ViewBag.CategoryId)
-    <br />
     @Html.Hidden("DateCreated", DateTime.UtcNow)
-    <br />
+
     @Html.Label("Title", "Titlul Subiectului")
     <br />
-    @Html.ValidationMessage("Title", new { @class = "text-danger " })
+    @Html.ValidationMessage("Title", new { @class = "text-danger" })
     @Html.TextBox("Title", null, new { @class = "form-control" })
     <br />
-    @Html.ValidationMessage("Description", new { @class = "text-danger " })
     @Html.Label("Description", "Descrierea Subiectului")
     <br />
-    @Html.TextBox("Description", null, new { @class = "form-control" })
-    <button type="submit">Adauga un subiect nou</button>
-</form>
+    @Html.ValidationMessage("Description", new { @class = "text-danger" })
+    @Html.TextArea("Description", null, new { @class = "form-control" })
+    <br />
+    <button class="btn btn-success" type="submit"><i class="glyphicon-plus glyphicon"></i> Adauga un subiect nou</button>
+}

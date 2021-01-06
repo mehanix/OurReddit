@@ -20,7 +20,9 @@ namespace OurReddit.Controllers
             var users = from user in db.Users
                         orderby user.UserName
                         select user;
-            ViewBag.UsersList = users;
+
+            string userId = User.Identity.GetUserId();
+            ViewBag.UsersList = users.Where(u => u.Id != userId).ToList();
             return View();
         }
 
@@ -35,13 +37,16 @@ namespace OurReddit.Controllers
             ViewBag.roleName = userRoleName;
 
             return View(user);
-       
         }
 
         [Authorize(Roles = "User,Moderator,Admin")]
         public ActionResult Edit(string id)
         {
             ApplicationUser user = db.Users.Find(id);
+            if (user == null)
+            {
+                return Redirect("/Category/Index");
+            }
             user.AllRoles = GetAllRoles();
             var userRole = user.Roles.FirstOrDefault();
             ViewBag.userRole = userRole.RoleId;
@@ -95,7 +100,6 @@ namespace OurReddit.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-
         [HttpDelete]
         public ActionResult Delete(string id)
         {
@@ -139,7 +143,5 @@ namespace OurReddit.Controllers
             }
             return selectList;
         }
-
     }
-
 }

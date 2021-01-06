@@ -1,13 +1,13 @@
 ﻿@model OurReddit.Models.ApplicationUser
 <h2 class="page-header"><i class="glyphicon glyphicon-edit"></i> Editeaza datele</h2>
-@using (Html.BeginForm(actionName: "Edit", controllerName: "Users", routeValues: new { id = Model.Id },method:FormMethod.Post, htmlAttributes: new { @class = "form-group" }))
+@using (Html.BeginForm(actionName: "Edit", controllerName: "Users", routeValues: new { id = Model.Id }, method: FormMethod.Post, htmlAttributes: new { @class = "form-group" }))
 {
+    @Html.AntiForgeryToken()
     @Html.HttpMethodOverride(HttpVerbs.Put)
     <br />
 
     <i class="glyphicon glyphicon-user"></i>
     @Html.Label("UserName", "Nume utilizator", new { @class = "" });
-
     <br />
 
     @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
@@ -15,7 +15,6 @@
 
     <i class="glyphicon glyphicon-envelope"></i>
     @Html.Label("Email", "Email utilizator", new { @class = "" });
-
     <br />
 
     @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
@@ -23,12 +22,11 @@
 
     <i class="glyphicon glyphicon-phone"></i>
     @Html.Label("PhoneNumber", "Numar telefon", new { @class = "" });
-
     <br />
 
     @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
     <br />
-    if (User.IsInRole("Admin"))
+    if (User.IsInRole("Admin") && Model.Email != "admin@gmail.com")
     {
         <i class="glyphicon glyphicon-star"></i>
         <label>Rolul</label>

@@ -18,7 +18,7 @@
         @using (Html.BeginForm(actionName: "Delete", controllerName: "Users", routeValues: new { id = @user.Id }))
         {
             <a class="btn btn-sm btn-success" href="/Users/Show/@user.Id"><i class="glyphicon-eye-open glyphicon"></i> Vezi profil </a>
-
+            @Html.AntiForgeryToken()
             @Html.HttpMethodOverride(HttpVerbs.Delete)
             <button class="btn btn-sm btn-danger" type="submit"><i class="glyphicon-trash glyphicon"></i> Sterge utilizator</button>
 

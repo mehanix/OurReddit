@@ -3,6 +3,8 @@
 
 @{
     ViewBag.What = "Categorii";
+    ViewBag.Route = "Category";
+    ViewBag.Action = "Index";
 }
 
 @if (ViewBag.total != 0)
@@ -28,6 +30,7 @@
             <div class="panel-body">
                 <div class="btn-group" role="group">
                     <form method="post" action="/Category/Delete/@category.Id">
+                        @Html.AntiForgeryToken()
                         @Html.HttpMethodOverride(HttpVerbs.Delete)
                         <a style="margin-right: 10px;" class="btn btn-success" href="/Category/Edit/@category.Id"><i class="glyphicon-edit glyphicon"></i> Edit</a>
                         <button class="btn btn-danger" type="submit"><i class="glyphicon-trash glyphicon"></i> Delete</button>

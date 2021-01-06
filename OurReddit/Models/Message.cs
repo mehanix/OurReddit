@@ -12,11 +12,10 @@ namespace OurReddit.Models
         public int Id { get; set; }
         [Required]
         public DateTime DateCreated { get; set; }
-        [Required]
-        [MinLength(1, ErrorMessage = "Cannot create empty message")]
+        [Required(ErrorMessage = "Acest camp este obligatoriu")]
         public string Content { get; set; }
         public bool Edited { get; set; }
-        [Required(ErrorMessage = "This field is mandatory")]
+        [Required(ErrorMessage = "Acest camp este obligatoriu")]
         public int SubjectId { get; set; }
         public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }

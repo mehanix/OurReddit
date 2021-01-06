@@ -11,15 +11,15 @@ namespace OurReddit.Models
     {
         [Key]
         public int Id { get; set; }
-        [StringLength(27, MinimumLength = 4, ErrorMessage = "Title whould have between 4 and 27 characters")]
-        [Required(ErrorMessage = "This field is mandatory")]
+        [StringLength(27, MinimumLength = 4, ErrorMessage = "Titlul trebuie sa aiba intre 4 si 27 de caractere")]
+        [Required(ErrorMessage = "Campul este obligatoriu")]
         public string Title { get; set; }
-        [StringLength(500, MinimumLength = 10, ErrorMessage = "Description is between 4 and 27 characters")]
-        [Required(ErrorMessage = "This field is mandatory")]
+        [StringLength(300, MinimumLength = 5, ErrorMessage = "Descrierea trebuie sa aiba intre 5 si 300 de caractere")]
+        [Required(ErrorMessage = "Campul este obligatoriu")]
         public string Description { get; set; }
         [Required]
         public DateTime DateCreated { get; set; }
-        [Required(ErrorMessage = "This field is mandatory")]
+        [Required(ErrorMessage = "Campul este obligatoriu")]
         public int CategoryId { get; set; }
         
         //un subiect apartine unei categorii 

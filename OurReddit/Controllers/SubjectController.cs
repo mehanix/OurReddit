@@ -16,8 +16,8 @@ namespace OurReddit.Controllers
 
         private static List<SelectListItem> SortingMethods = new List<SelectListItem>
         {
-            new SelectListItem { Text = "Recent First", Value = "1"},
-            new SelectListItem { Text = "Oldest First", Value = "2"},
+            new SelectListItem { Text = "Cele mai recente primele", Value = "1"},
+            new SelectListItem { Text = "Cele mai vechi primele", Value = "2"},
         };
 
         [HttpGet]
@@ -47,6 +47,9 @@ namespace OurReddit.Controllers
             ViewBag.subject = subject;
             ViewBag.total = subject.Messages.Count();
             ViewBag.SortingMethods = SortingMethods;
+            ViewBag.isModerator = User.IsInRole("Moderator");
+            ViewBag.isAdmin = User.IsInRole("Admin");
+
             return View();
         }
 
@@ -72,13 +75,13 @@ namespace OurReddit.Controllers
                 subject.UserId = User.Identity.GetUserId();
                 db.Subjects.Add(subject);
                 db.SaveChanges();
-                TempData["Alert"] = "Created new subject: " + subject.Title.ToString();
+                TempData["Alert"] = "Ai creat un nou subiect: " + subject.Title.ToString();
                 return Redirect("/Category/Show/" + subject.CategoryId);
             }
             catch (Exception e)
             {
-                TempData["Alert"] = "Failed to create subject with: " + e.Message;
-                return Redirect("/Category/Show/" + subject.CategoryId);
+                TempData["Alert"] = "Eroare la creare subiectului";
+                return View(subject);
             }
         }
 
@@ -99,7 +102,7 @@ namespace OurReddit.Controllers
             }
             else
             {
-                TempData["Alert"] = "N-ai voie !!!!!!!";
+                TempData["Alert"] = "Nu ai drepturi suficiente";
                 return Redirect("/Category/Show/" + subject.CategoryId);
             }
         }
@@ -112,6 +115,10 @@ namespace OurReddit.Controllers
             Subject subject = db.Subjects.Find(id);
             subject.AllCategories = GetAllCategories();
             ViewBag.subjectCategory = subject.CategoryId;
+            
+            ViewBag.isModerator = User.IsInRole("Moderator");
+            ViewBag.isAdmin = User.IsInRole("Admin");
+
             try
             {
                 if (subject.UserId == User.Identity.GetUserId() || User.IsInRole("Admin") || User.IsInRole("Moderator"))
@@ -127,25 +134,25 @@ namespace OurReddit.Controllers
                         if(newCategoryId != null)
                             subject.CategoryId = Int32.Parse(newCategoryId);
                         db.SaveChanges();
-                        TempData["Alert"] = "Edited subject: " + subject.Title.ToString();
+                        TempData["Alert"] = "Subiectul a fost editat: " + subject.Title.ToString();
                     }
                     else
                     {
-                        TempData["Alert"] = "Failed to edit subject: " + subject.Title.ToString();
+                        TempData["Alert"] = "Eroare la editarea subiectului";
                         return View(subject);
                     }
                     return Redirect("/Category/Show/" + subject.CategoryId);
                 }
                 else
                 {
-                    TempData["Alert"] = "Nu ai voieeeee  ";
-                    return View();
+                    TempData["Alert"] = "nu ai suficiente drepturi";
+                    return Redirect("Category/Show/" + subject.CategoryId);
                 }
             }
             catch (Exception e)
             {
-                TempData["Alert"] = "Failed to edit subject with error: " + e.Message;
-                return View();
+                TempData["Alert"] = "Eroare la editarea subiectului";
+                return View(subject);
             }
         }
 
@@ -175,12 +182,12 @@ namespace OurReddit.Controllers
             {
                 db.Subjects.Remove(subject);
                 db.SaveChanges();
-                TempData["Alert"] = "Deleted subject: " + subject.Title.ToString();
+                TempData["Alert"] = "Subiectul a fost sters: " + subject.Title.ToString();
                 return Redirect("/Category/Show/" + subject.CategoryId);
             }
             else
             {
-                TempData["Alert"] = "Nu se poateee ca nu esti suficient de bun si viata ta incompatibila cu stergerea de subiecte de discutie";
+                TempData["Alert"] = "nu ai suficiente drepturi";
                 return Redirect("/Category/Show/" + subject.CategoryId);
             }
         }
